@@ -7,6 +7,7 @@
 4) PVE Helper scripts (more available at https://tteck.github.io/Proxmox/)
 5) LXC GPU, Sound and Keyboard passthrough template
 6) asound.conf to set DP/HDMI as the default audio device
+7) Updated ariel.ttf with UTF8 and devanagari support. Replace /usr/share/kodi/media/Fonts/ariel.ttf with this one after backing up
 
 ## Enabling IOMMU/VT-d Virtualization
 
