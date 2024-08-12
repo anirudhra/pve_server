@@ -6,6 +6,7 @@
 3) Shell scripts and aliases
 4) PVE Helper scripts (more available at https://tteck.github.io/Proxmox/)
 5) LXC GPU, Sound and Keyboard passthrough template
+6) asound.conf to set DP/HDMI as the default audio device
 
 ## Enabling IOMMU/VT-d Virtualization
 
