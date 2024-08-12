@@ -12,14 +12,15 @@
 
 1) Add intel_iommu=on and iommu=pt to /etc/default/grub: GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on iommu=pt"
 2) Run: upgrade-grub
-3) Add following modules to /etc/modules
-  vfio
- vfio_iommu_type1
- vfio_pci
- vfio_virqfd #not needed if on kernel 6.2 or newer
+3) Add following modules to /etc/modules <br>
+ vfio <br>
+ vfio_iommu_type1 <br>
+ vfio_pci <br>
+ vfio_virqfd #not needed if on kernel 6.2 or newer <br>
 4) Run: update-initramfs -u -k all
 5) Reboot
-6) Check:
-   dmesg | grep -e DMAR -e IOMMU
-   lsmod | grep vfio
+6) Check: <br>
+   dmesg | grep -e DMAR -e IOMMU <br>
+   lsmod | grep vfio <br>
+   cat /proc/cmdline <br>
    
