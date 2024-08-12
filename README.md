@@ -4,4 +4,22 @@
 2) Kodi Proxmox LXC script
    Script modified from: https://github.com/mrrudy/proxmoxHelper to install livestream plugin
 3) Shell scripts and aliases
-4) PVE Helper scripts (originally from https://tteck.github.io/Proxmox/)
+4) PVE Helper scripts (more available at https://tteck.github.io/Proxmox/)
+
+## Enabling IOMMU/VT-d Virtualization
+
+(https://pve.proxmox.com/wiki/PCI(e)_Passthrough)
+
+1) Add intel_iommu=on and iommu=pt to /etc/default/grub: GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on iommu=pt"
+2) Run: upgrade-grub
+3) Add following modules to /etc/modules
+  vfio
+ vfio_iommu_type1
+ vfio_pci
+ vfio_virqfd #not needed if on kernel 6.2 or newer
+4) Run: update-initramfs -u -k all
+5) Reboot
+6) Check:
+   dmesg | grep -e DMAR -e IOMMU
+   lsmod | grep vfio
+   
