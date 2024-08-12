@@ -5,3 +5,4 @@ HP Elitedesk 800 G4 Mini Server files
 2) Kodi Proxmox LXC script
    Script modified from: https://github.com/mrrudy/proxmoxHelper to install livestream plugin
 3) Shell scripts and aliases
+4) PVE Helper scripts
