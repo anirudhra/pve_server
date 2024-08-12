@@ -20,7 +20,7 @@
 4) Run: update-initramfs -u -k all
 5) Reboot
 6) Check: <br>
-   dmesg | grep -e DMAR -e IOMMU <br>
-   lsmod | grep vfio <br>
+   dmesg | grep -i -e DMAR -e IOMMU <br>
+   lsmod | grep -i vfio <br>
    cat /proc/cmdline <br>
    
