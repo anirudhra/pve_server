@@ -5,6 +5,7 @@
    Script modified from: https://github.com/mrrudy/proxmoxHelper to install livestream plugin
 3) Shell scripts and aliases
 4) PVE Helper scripts (more available at https://tteck.github.io/Proxmox/)
+5) LXC GPU, Sound and Keyboard passthrough template
 
 ## Enabling IOMMU/VT-d Virtualization
 
