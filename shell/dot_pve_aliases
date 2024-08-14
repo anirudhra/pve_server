@@ -101,6 +101,8 @@ alias gomedia='cd /mnt/ssd-usb/ssd-media/media'
 alias more='less'
 #alias cat='less'
 
+alias booterrors='journalctl  -b 0  -p 3'
+
 alias sshrouter='ssh admin@10.100.100.1'
 alias pingrouter='ping 10.100.100.1'
 alias pingserverwifi='ping 10.100.100.95'
