@@ -26,4 +26,8 @@
    dmesg | grep -i -e DMAR -e IOMMU <br>
    lsmod | grep -i vfio <br>
    cat /proc/cmdline <br>
-   
+
+## Full Kernel Command line:
+/etc/default/grub:<br>
+<br>
+Kernel command line: BOOT_IMAGE=/boot/vmlinuz-6.8.12-1-pve root=/dev/mapper/pve-root ro quiet i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt
