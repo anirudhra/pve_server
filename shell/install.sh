@@ -5,6 +5,8 @@ apt install vim btop htop duf avahi-daemon avahi-utils alsa-utils cpufrequtils l
 # apt install intel-media-va-driver
 # non-free intel driver
 apt install intel-media-va-driver-non-free
+# on kodi hosts, install the following
+# apt install kodi-inputstream-adaptive
 apt clean
 apt autoclean
 apt autoremove
