@@ -12,6 +12,12 @@
 ## HDMI/DP Audio patch
 Apple the firmware patch to activate pin 6 for audio
 
+## Install Kodi
+Use this command:
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/kodi_lxc_proxmoxHelper/ct/kodi-v1.sh)"
+
+This custom update to the original script uses Ubuntu 24.04 instead of older version
+
 ## Drive temp
 before running sensors-detect, run 'modprobe drivetemp' for SATA HDDs
 
