@@ -111,6 +111,7 @@ alias sshserverwifi='ssh -o MACs=hmac-sha2-256 root@10.100.100.95'
 alias sshserver='ssh -o MACs=hmac-sha2-256 root@10.100.100.95'
 
 alias updateboot='update-grub && update-initramfs -u -k all'
+alias booterrors='journalctl  -b 0  -p 3'
 
 ######## functions ######################
 mkcd()
