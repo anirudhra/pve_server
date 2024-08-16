@@ -3,10 +3,10 @@
 echo -e "Loading..."
 APP="kodi"
 var_disk="8"
-var_cpu="2"
-var_ram="2048"
+var_cpu="4"
+var_ram="4096"
 var_os="ubuntu"
-var_version="22.04"
+var_version="24.04"
 NSAPP=$(echo ${APP,,} | tr -d ' ')
 var_install="${NSAPP}-install"
 NEXTID=$(pvesh get /cluster/nextid)
@@ -94,8 +94,8 @@ function default_settings() {
 }
 function advanced_settings() {
 var_version=$(whiptail --title "UBUNTU VERSION" --radiolist "Choose Version" 10 58 3 \
-"20.04" "Focal" OFF \
-"22.04" "Jammy" ON \
+"22.04" "Jammy" OFF \
+"24.04" "Noble" ON \
 3>&1 1>&2 2>&3)
 exitstatus=$?
 if [ $exitstatus = 0 ]; then echo -e "${DGN}Using Ubuntu Version: ${BGN}$var_version${CL}"; fi
@@ -251,7 +251,7 @@ msg_ok "Stopped LXC Container"
 
 LXC_CONFIG=/etc/pve/lxc/${CTID}.conf
 cat <<EOF >> $LXC_CONFIG
-lxc.cgroup2.devices.allow: c 226:0 rwm
+lxc.cgroup2.devices.allow: c 226:* rwm
 lxc.cgroup2.devices.allow: c 226:128 rwm
 lxc.cgroup2.devices.allow: c 29:0 rwm
 lxc.mount.entry: /dev/fb0 dev/fb0 none bind,optional,create=file
