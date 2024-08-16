@@ -9,6 +9,12 @@
 6) asound.conf to set DP/HDMI as the default audio device
 7) Updated ariel.ttf with UTF8 and devanagari support. Replace /usr/share/kodi/media/Fonts/ariel.ttf with this one after backing up
 
+## HDMI/DP Audio patch
+Apple the firmware patch to activate pin 6 for audio
+
+## Drive temp
+before running sensors-detect, run 'modprobe drivetemp' for SATA HDDs
+
 ## Enabling IOMMU/VT-d Virtualization
 
 (https://pve.proxmox.com/wiki/PCI(e)_Passthrough)
