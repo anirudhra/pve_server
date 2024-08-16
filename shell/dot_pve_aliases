@@ -84,7 +84,7 @@ then
 fi
 
 # Get rid of .DS_Store files recursiveloy in current directory tree
-alias dsclean='find . -type f -name .DS_Store -delete'
+alias dsclean='find . -type f -name .DS_Store -delete && find . -type f -name ._.DS_Store -delete'
 #alias shuf='gshuf'
 
 #cleanup caches
