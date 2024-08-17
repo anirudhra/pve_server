@@ -3,5 +3,5 @@
 #/mnt/nfs-ssd -fstype=nfs,rw 10.100.100.95:/mnt/ssd-usb
 #
 # following to directly /mnt to get paths like /mnt/ssd-media etc.
-/mnt -fstype=nfs,rw 10.100.100.95:/mnt/ssd-usb
+/mnt/nfs-ssd -fstype=nfs,rw 10.100.100.50:/mnt/sata-ssd
 
