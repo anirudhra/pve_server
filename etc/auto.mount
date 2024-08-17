@@ -1,7 +1,0 @@
-# mount points bound directly in host pve for this lxc, but permission issues hence using automount
-# pct set <lxc_id> -mp0 /mnt/host_dir,mp=/mnt/guest_dir
-#/mnt/nfs-ssd -fstype=nfs,rw 10.100.100.95:/mnt/ssd-usb
-#
-# following to directly /mnt to get paths like /mnt/ssd-media etc.
-/mnt -fstype=nfs,rw 10.100.100.95:/mnt/ssd-usb
-
