@@ -9,10 +9,22 @@
 6) asound.conf to set DP/HDMI as the default audio device
 7) Updated ariel.ttf with UTF8 and devanagari support. Replace /usr/share/kodi/media/Fonts/ariel.ttf with this one after backing up
 
-## HDMI/DP Audio patch
+## LXC Environment automation:
+
+Use this command to run off github:
+```
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/shell/install.sh)"
+```
+
+Use this command to copy locally:
+```
+wget https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/shell/install.sh
+```
+
+## HDMI/DP Audio patch on PVE server
 Apple the firmware patch to activate pin 6 for audio
 
-## Install Kodi
+## Install Kodi on LXC
 Use this command:
 ```
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/kodi_lxc_proxmoxHelper/ct/kodi-v1.sh)"
@@ -20,10 +32,10 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/anirudhra/hpe800g4dm_se
 
 This custom update to the original script uses Ubuntu 24.04 instead of older version
 
-## Drive temp
+## Drive temp on PVE Server
 before running sensors-detect, run 'modprobe drivetemp' for SATA HDDs
 
-## Enabling IOMMU/VT-d Virtualization
+## Enabling IOMMU/VT-d Virtualization on PVE Server
 
 (https://pve.proxmox.com/wiki/PCI(e)_Passthrough)
 
@@ -51,24 +63,8 @@ before running sensors-detect, run 'modprobe drivetemp' for SATA HDDs
    cat /proc/cmdline
 ```
 
-## Full Kernel Command line:
+## Full Kernel Command line on PVE Server:
 /etc/default/grub: Kernel command line:
 ```
    BOOT_IMAGE=/boot/vmlinuz-6.8.12-1-pve root=/dev/mapper/pve-root ro quiet i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt
-```
-
-## Enable autologin in PVE GUI
-
-Type the following in a console:
-
-```
-GETTY_OVERRIDE="/etc/systemd/system/container-getty@1.service.d/override.conf"
-mkdir -p $(dirname $GETTY_OVERRIDE)
-cat <<EOF >$GETTY_OVERRIDE
-  [Service]
-  ExecStart=
-  ExecStart=-/sbin/agetty --autologin root --noclear --keep-baud tty%I 115200,38400,9600 \$TERM
-EOF
-systemctl daemon-reload
-systemctl restart $(basename $(dirname $GETTY_OVERRIDE) | sed 's/\.d//')
 ```
