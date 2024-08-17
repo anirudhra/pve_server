@@ -1,7 +1,15 @@
+echo Configuring Timezone...
 dpkg-reconfigure tzdata
+echo
+echo Configuring Locales...
 dpkg-reconfigure locales
+echo
+echo Updating package list and packages...
+echo
 apt update
 apt upgrade
+echo Installing packages...
+echo
 # following section is for PVE server
 # apt install vim btop htop duf avahi-daemon avahi-utils alsa-utils cpufrequtils lm-sensors drivetemp vainfo usbutils pciutils intel-gpu-tools autofs
 #
@@ -19,15 +27,28 @@ apt install vim btop htop duf avahi-daemon avahi-utils autofs
 #
 # on kodi hosts, install the following
 # apt install kodi-inputstream-adaptive
+echo Cleaning up...
+echo
 apt clean
 apt autoclean
 apt autoremove
 #
+echo Configuring shell...
+echo
 # add aliases
 wget -O ~/.aliases https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/shell/dot_pve_aliases
 # source aliases in .profile after creating backup
 cp ~/.profile ~/.profile.bak
 echo "source ~/.aliases" >> ~/.profile
 echo
+echo Automounting NFS shares in /mnt/nfs-ssd
+cp /etc/auto.master /etc/auto.master.bak
+cp /etc/auto.mount /etc/auto.mount.bak
+echo "\# manually added for server" >> /etc/auto.master
+echo "\/- \/etc\/auto.mount" >> /etc/auto.master
+echo "\# nfs server mount" >> /etc/auto.mount
+echo "\/mnt\/nfs-ssd -fstype\=nfs\,rw 10.100.100.50\:\/mnt\/sata-ssd" >> /etc/auto.mount
+systemctl daemon-reload
+systemctl restart autofs
+echo
 echo "Done! Logout and log back in for changes"
-
