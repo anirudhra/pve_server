@@ -43,3 +43,19 @@ before running sensors-detect, run 'modprobe drivetemp' for SATA HDDs
 /etc/default/grub:<br>
 <br>
 Kernel command line: BOOT_IMAGE=/boot/vmlinuz-6.8.12-1-pve root=/dev/mapper/pve-root ro quiet i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt
+
+## Enable autologin in PVE GUI
+
+Type the following in a console:
+
+-----------------------
+GETTY_OVERRIDE="/etc/systemd/system/container-getty@1.service.d/override.conf"
+mkdir -p $(dirname $GETTY_OVERRIDE)
+cat <<EOF >$GETTY_OVERRIDE
+  [Service]
+  ExecStart=
+  ExecStart=-/sbin/agetty --autologin root --noclear --keep-baud tty%I 115200,38400,9600 \$TERM
+EOF
+systemctl daemon-reload
+systemctl restart $(basename $(dirname $GETTY_OVERRIDE) | sed 's/\.d//')
+-------------------------
