@@ -1,7 +1,9 @@
+dpkg-reconfigure tzdata
+dpkg-reconfigure locales
 apt update
 apt upgrade
 # following section is for PVE server
-apt install vim btop htop duf avahi-daemon avahi-utils alsa-utils cpufrequtils lm-sensors drivetemp vainfo usbutils pciutils intel-gpu-tools autofs
+# apt install vim btop htop duf avahi-daemon avahi-utils alsa-utils cpufrequtils lm-sensors drivetemp vainfo usbutils pciutils intel-gpu-tools autofs
 #
 # following section is for PVE LXC
 apt install vim btop htop duf avahi-daemon avahi-utils alsa-utils autofs
@@ -17,3 +19,10 @@ apt install intel-media-va-driver-non-free vainfo intel-gpu-tools
 apt clean
 apt autoclean
 apt autoremove
+#
+# add aliases
+wget https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/shell/dot_pve_aliases ~/.aliases
+# source aliases in .profile after creating backup
+cp ~/.profile ~/.profile.bak
+echo "source ~/.aliases" >> ~/.profile
+
