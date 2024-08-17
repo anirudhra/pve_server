@@ -21,6 +21,21 @@ Use this command to copy locally:
 wget https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/shell/install.sh
 ```
 
+## LXC autologin in PVE Console
+Type the following in LXC console to enable auto login:
+
+```
+GETTY_OVERRIDE="/etc/systemd/system/container-getty@1.service.d/override.conf"
+mkdir -p $(dirname $GETTY_OVERRIDE)
+cat <<EOF >$GETTY_OVERRIDE
+  [Service]
+  ExecStart=
+  ExecStart=-/sbin/agetty --autologin root --noclear --keep-baud tty%I 115200,38400,9600 \$TERM
+EOF
+systemctl daemon-reload
+systemctl restart $(basename $(dirname $GETTY_OVERRIDE) | sed 's/\.d//')
+```
+
 ## HDMI/DP Audio patch on PVE server
 Apple the firmware patch to activate pin 6 for audio
 
