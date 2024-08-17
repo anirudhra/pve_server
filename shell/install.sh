@@ -24,7 +24,7 @@ apt autoclean
 apt autoremove
 #
 # add aliases
-wget https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/shell/dot_pve_aliases ~/.aliases
+wget -O ~/.aliases https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/shell/dot_pve_aliases
 # source aliases in .profile after creating backup
 cp ~/.profile ~/.profile.bak
 echo "source ~/.aliases" >> ~/.profile
