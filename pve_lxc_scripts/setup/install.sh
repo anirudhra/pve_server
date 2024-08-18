@@ -33,6 +33,8 @@ apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common
 # following section is for PVE host or if you have audio passthrough in LXC
 # apt install alsa-utils
 #
+# for issues with Intel iGPU, read through https://wiki.archlinux.org/title/Intel_graphics for potential issues/solutions
+#
 # following section is if you have iGPU passthrough in LXC
 # foss intel driver - install one of below (only decode)
 # apt install intel-media-va-driver vainfo intel-gpu-tools
