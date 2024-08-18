@@ -1,13 +1,31 @@
 # HP Elitedesk 800 G4 Mini Server files (hpe800g4dm_server)
 
-1) UEFI 2.27 introduces an issue with displayport pin mapping. Linux does not see audio through displayport and hence needs explicit patching until kernel includes it by default (not as of 6.8.12)
-2) Kodi Proxmox LXC script
-   Script modified from: https://github.com/mrrudy/proxmoxHelper to install livestream plugin (apt install kodi-inputstream-adaptive)
-3) Shell scripts and aliases
-4) PVE Helper scripts (more available at https://tteck.github.io/Proxmox/)
-5) LXC GPU, Sound and Keyboard passthrough template
-6) asound.conf to set DP/HDMI as the default audio device
-7) Updated ariel.ttf with UTF8 and devanagari support. Replace /usr/share/kodi/media/Fonts/ariel.ttf with this one after backing up
+Scripts to set up Proxmox host and LXC containers and maintenance scripts.
+
+Proxmox Host:
+
+1) UEFI 2.27 introduces an issue with displayport pin mapping by not activating pin 6 for audio in Linux and needs explicit patching until kernel includes it by default (not as of 6.8.12): /etc/modprobe.d/hda-jack-retask.conf, /usr/lib/firmware/hda-jack-retask.fw
+2) Sets DP/HDMI as default audio: /etc/asound.conf
+2) Adds useful set of aliases /home/(user)/.aliases
+3) Add NFS exports: /etc/exports
+4) Includes GPU, Keyboard, Audio passthrough in LXC conf for reference: /etc/pve/lxc/lxc-id.conf
+5) Includes scritps for PVE host maintenance, backup-restore and other tweaks: /pve_maintenance (needs to be manually installed/pulled from github)
+
+LXC:
+
+1) Sets DP/HDMI as default audio: /etc/asound.conf
+2) Adds useful set of aliases /home/(user)/.aliases
+3) Mounts NFS exports: /etc/auto.master, /etc/auto.mount
+
+## PVE Helper Scripts archives:
+Repo also contains archives for popular PVE and LXC scripts from ttek and mrrudy (for kodi):
+
+### ttek PVE
+Copy of PVE Helper scripts from ttkek: https://tteck.github.io/Proxmox/
+
+### mrrudy Kodi
+
+Kodi as PVE LXC from mrrudy: https://github.com/mrrudy/proxmoxHelper (modified here to additionally install kodi-inputstream-adaptive)
 
 ## LXC Environment automation:
 
@@ -36,50 +54,36 @@ systemctl daemon-reload
 systemctl restart $(basename $(dirname $GETTY_OVERRIDE) | sed 's/\.d//')
 ```
 
-## HDMI/DP Audio patch on PVE server
-Apple the firmware patch to activate pin 6 for audio
-
-## Install Kodi on LXC
-Use this command:
-```
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/kodi_lxc_proxmoxHelper/ct/kodi-v1.sh)"
-```
-
-This custom update to the original script uses Ubuntu 24.04 instead of older version
-
-## Drive temp on PVE Server
-before running sensors-detect, run 'modprobe drivetemp' for SATA HDDs
-
 ## Enabling IOMMU/VT-d Virtualization on PVE Server
 
 (https://pve.proxmox.com/wiki/PCI(e)_Passthrough)
 
-1) Add intel_iommu=on and iommu=pt to /etc/default/grub: GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on iommu=pt"
+1) Add "i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt" to /etc/default/grub "GRUB_CMDLINE_LINUX_DEFAULT"
 2) Run:
 ```
-   upgrade-grub
+upgrade-grub
 ```
 4) Add following modules to /etc/modules:
 ```
- vfio
- vfio_iommu_type1
- vfio_pci
- vfio_virqfd #not needed if on kernel 6.2 or newer
+vfio
+vfio_iommu_type1
+vfio_pci
+vfio_virqfd #not needed if on kernel 6.2 or newer
 ```
 6) Run:
 ```
-   update-initramfs -u -k all
+update-initramfs -u -k all
 ```
 8) Reboot
-9) Check:
+9) Check (should see lines along Directed I/O):
 ```
-   dmesg | grep -i -e DMAR -e IOMMU
-   lsmod | grep -i vfio
-   cat /proc/cmdline
+dmesg | grep -i -e DMAR -e IOMMU
+lsmod | grep -i vfio
+cat /proc/cmdline
 ```
 
-## Full Kernel Command line on PVE Server:
+### Full Kernel Command line on PVE Server for reference
 /etc/default/grub: Kernel command line:
 ```
-   BOOT_IMAGE=/boot/vmlinuz-6.8.12-1-pve root=/dev/mapper/pve-root ro quiet i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt
+BOOT_IMAGE=/boot/vmlinuz-6.8.12-1-pve root=/dev/mapper/pve-root ro quiet i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt
 ```
