@@ -1,6 +1,6 @@
-# HP Elitedesk 800 G4 Mini Server files (hpe800g4dm_server)
+# HP Elitedesk 800 G4/G5 Mini Server files (hpe800g4dm_server)
 
-## Scripts to set up Proxmox host and LXC containers and maintenance scripts.
+## Custom scripts for Proxmox host and LXC setup and maintenance
 
 ### Proxmox Host:
 
