@@ -75,15 +75,15 @@ lsmod | grep -i vfio
 cat /proc/cmdline
 ```
 
+## Intel iGPU issues and solutions
+Note: More information here: https://wiki.archlinux.org/title/Intel_graphics
+Wiki says enable_gvt=1 conflicts with any non-zero enable_guc option in kernal command line.
+
 ### Full Kernel Command line on PVE Server for reference
 Kernel command line from /etc/default/grub:
 ```
 BOOT_IMAGE=/boot/vmlinuz-6.8.12-1-pve root=/dev/mapper/pve-root ro quiet i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt
 ```
-
-## Intel iGPU issues and solutions
-
-More information here: https://wiki.archlinux.org/title/Intel_graphics
 
 ## PVE Helper Scripts archives
 Repo also contains archives of the excellent and much popular PVE and LXC scripts from ttek and mrrudy (for kodi):
