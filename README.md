@@ -75,16 +75,28 @@ lsmod | grep -i vfio
 cat /proc/cmdline
 ```
 
-## Intel iGPU issues and solutions
-Note: More information here (may need to create explicit xorg conf): https://wiki.archlinux.org/title/Intel_graphics
-Wiki says enable_gvt=1 conflicts with any non-zero enable_guc option in kernal command line.
-Also check this page for missing Intel iGPU firmware for certain models like Celeron etc.: https://wiki.debian.org/Firmware#Firmware_missing_from_Debian
-
 ### Full Kernel Command line on PVE Server for reference
 Kernel command line from /etc/default/grub:
 ```
 BOOT_IMAGE=/boot/vmlinuz-6.8.12-1-pve root=/dev/mapper/pve-root ro quiet i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt
 ```
+
+## Switching server between default console and GUI modes
+
+To set console/cli as default:
+```
+systemctl set-default multi-user.target
+```
+
+To set X11 login on boot as default:
+```
+systemctl set-default graphical.target
+```
+
+## Intel iGPU issues and solutions
+Note: More information here (may need to create explicit xorg conf): https://wiki.archlinux.org/title/Intel_graphics
+Wiki says enable_gvt=1 conflicts with any non-zero enable_guc option in kernal command line.
+Also check this page for missing Intel iGPU firmware for certain models like Celeron etc.: https://wiki.debian.org/Firmware#Firmware_missing_from_Debian
 
 ## PVE Helper Scripts archives
 Repo also contains archives of the excellent and much popular PVE and LXC scripts from ttek and mrrudy (for kodi):
