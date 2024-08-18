@@ -3,6 +3,10 @@
 # Sets up PVE host and/or LXC container for basic usage
 # More updates planned to make it parameterizable
 #
+# Configure console font and size, esp. usefull for hidpi displays (select Combined Latin, Terminus, 16x32 for legibility
+echo
+echo Configuring Console...
+# dpkg-reconfigure console-setup
 # Configure timezone and locale for en/UTF-8
 echo
 echo Configuring Timezone...
