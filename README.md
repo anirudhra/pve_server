@@ -1,8 +1,8 @@
 # HP Elitedesk 800 G4 Mini Server files (hpe800g4dm_server)
 
-Scripts to set up Proxmox host and LXC containers and maintenance scripts.
+## Scripts to set up Proxmox host and LXC containers and maintenance scripts.
 
-Proxmox Host:
+### Proxmox Host:
 
 1) UEFI 2.27 introduces an issue with displayport pin mapping by not activating pin 6 for audio in Linux and needs explicit patching until kernel includes it by default (not as of 6.8.12): /etc/modprobe.d/hda-jack-retask.conf, /usr/lib/firmware/hda-jack-retask.fw
 2) Sets DP/HDMI as default audio: /etc/asound.conf
@@ -11,7 +11,7 @@ Proxmox Host:
 4) Includes GPU, Keyboard, Audio passthrough in LXC conf for reference: /etc/pve/lxc/lxc-id.conf
 5) Includes scritps for PVE host maintenance, backup-restore and other tweaks: /pve_maintenance (needs to be manually installed/pulled from github)
 
-LXC:
+### LXC:
 
 1) Sets DP/HDMI as default audio: /etc/asound.conf
 2) Adds useful set of aliases /home/(user)/.aliases
