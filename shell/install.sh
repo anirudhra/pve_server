@@ -31,6 +31,9 @@ apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common
 # non-free intel driver (both decode and encode)
 # apt install intel-media-va-driver-non-free vainfo intel-gpu-tools
 #
+# the following will setup HDMI audio as default in ALSA
+# wget -O /etc/asound.conf https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/lxc_conf/etc/asound.conf
+#
 # on kodi hosts, install the following
 # apt install kodi-inputstream-adaptive
 echo
