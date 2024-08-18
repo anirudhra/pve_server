@@ -17,16 +17,6 @@
 2) Adds useful set of aliases /home/(user)/.aliases
 3) Mounts NFS exports: /etc/auto.master, /etc/auto.mount
 
-## PVE Helper Scripts archives
-Repo also contains archives for popular PVE and LXC scripts from ttek and mrrudy (for kodi):
-
-### ttek PVE
-Copy of PVE Helper scripts from ttkek: https://tteck.github.io/Proxmox/
-
-### mrrudy Kodi
-
-Kodi as PVE LXC from mrrudy: https://github.com/mrrudy/proxmoxHelper (modified here to additionally install kodi-inputstream-adaptive)
-
 ## LXC Environment automation
 
 Use this command to run off github:
@@ -87,3 +77,13 @@ cat /proc/cmdline
 ```
 BOOT_IMAGE=/boot/vmlinuz-6.8.12-1-pve root=/dev/mapper/pve-root ro quiet i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt
 ```
+
+## PVE Helper Scripts archives
+Repo also contains archives for popular PVE and LXC scripts from ttek and mrrudy (for kodi):
+
+### ttek PVE
+Copy of PVE Helper scripts from ttkek: https://tteck.github.io/Proxmox/
+
+### mrrudy Kodi
+
+Kodi as PVE LXC from mrrudy: https://github.com/mrrudy/proxmoxHelper (modified here to additionally install kodi-inputstream-adaptive)
