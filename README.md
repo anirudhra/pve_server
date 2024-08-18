@@ -82,7 +82,7 @@ BOOT_IMAGE=/boot/vmlinuz-6.8.12-1-pve root=/dev/mapper/pve-root ro quiet i915.en
 ```
 
 ## PVE Helper Scripts archives
-Repo also contains archives for popular PVE and LXC scripts from ttek and mrrudy (for kodi):
+Repo also contains archives of the excellent and much popular PVE and LXC scripts from ttek and mrrudy (for kodi):
 
 ### ttek PVE
 Copy of PVE Helper scripts from ttkek: https://tteck.github.io/Proxmox/
