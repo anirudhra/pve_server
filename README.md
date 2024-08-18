@@ -46,7 +46,7 @@ systemctl restart $(basename $(dirname $GETTY_OVERRIDE) | sed 's/\.d//')
 
 ## Enabling IOMMU/VT-d Virtualization on PVE Server
 
-(https://pve.proxmox.com/wiki/PCI(e)_Passthrough)
+Referenced from https://pve.proxmox.com/wiki/PCI(e)_Passthrough:
 
 1) Add "i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt" to /etc/default/grub "GRUB_CMDLINE_LINUX_DEFAULT"
 2) Run:
