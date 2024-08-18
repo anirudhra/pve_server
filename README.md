@@ -78,6 +78,7 @@ cat /proc/cmdline
 ## Intel iGPU issues and solutions
 Note: More information here: https://wiki.archlinux.org/title/Intel_graphics
 Wiki says enable_gvt=1 conflicts with any non-zero enable_guc option in kernal command line.
+Also check this page for missing Intel iGPU firmware for certain models like Celeron etc.: https://wiki.debian.org/Firmware#Firmware_missing_from_Debian
 
 ### Full Kernel Command line on PVE Server for reference
 Kernel command line from /etc/default/grub:
