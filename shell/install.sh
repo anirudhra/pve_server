@@ -1,3 +1,6 @@
+#!/bin/sh
+# (c) Anirudh Acharya 2024
+# Sets up LXC container inside proxmox for basic usage
 echo
 echo Configuring Timezone...
 dpkg-reconfigure tzdata
