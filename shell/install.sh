@@ -17,7 +17,7 @@ echo
 # apt install vim btop htop duf avahi-daemon avahi-utils alsa-utils cpufrequtils lm-sensors drivetemp vainfo usbutils pciutils intel-gpu-tools autofs
 #
 # following section is for PVE LXC
-apt install vim btop htop duf avahi-daemon avahi-utils autofs
+apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common
 #
 # following section is if you have audio passthrough in LXC
 # apt install alsa-utils
