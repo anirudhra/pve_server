@@ -1,0 +1,6 @@
+ssd-media/media/cache
+ssd-data/dockerapps/vega/navidrome/data/cache
+ssd-data/dockerapps/vega/lms/config/cache
+ssd-data/dockerapps/vega/kavita/data/backups
+ssd-data/dockerapps/blanka/youtube-dl/db
+ssd-data/dockerapps/blanka/jdownloader2/config

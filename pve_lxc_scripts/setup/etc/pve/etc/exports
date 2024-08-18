@@ -1,0 +1,3 @@
+#share sata-ssd over nfs
+/mnt/sata-ssd 10.100.100.0/24(rw,sync,no_subtree_check,no_root_squash,no_all_squash)
+
