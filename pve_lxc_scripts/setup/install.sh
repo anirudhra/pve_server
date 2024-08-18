@@ -1,6 +1,9 @@
 #!/bin/sh
 # (c) Anirudh Acharya 2024
-# Sets up LXC container inside proxmox for basic usage
+# Sets up PVE host and/or LXC container for basic usage
+# More updates planned to make it parameterizable
+#
+# Configure timezone and locale for en/UTF-8
 echo
 echo Configuring Timezone...
 dpkg-reconfigure tzdata
@@ -9,6 +12,7 @@ echo Configuring Locales...
 echo
 dpkg-reconfigure locales
 echo
+# Perform OS update and upgrade
 echo Updating package list and packages...
 echo
 apt update
@@ -16,13 +20,13 @@ apt upgrade
 echo
 echo Installing packages...
 echo
-# following section is for PVE server
-# apt install vim btop htop duf avahi-daemon avahi-utils alsa-utils cpufrequtils lm-sensors drivetemp vainfo usbutils pciutils intel-gpu-tools autofs
+# following section is for PVE host
+# apt install vim btop htop duf avahi-daemon avahi-utils alsa-utils cpufrequtils nfs-kernel-server lm-sensors drivetemp vainfo usbutils pciutils intel-gpu-tools autofs
 #
 # following section is for PVE LXC
 apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common
 #
-# following section is if you have audio passthrough in LXC
+# following section is for PVE host or if you have audio passthrough in LXC
 # apt install alsa-utils
 #
 # following section is if you have iGPU passthrough in LXC
@@ -31,8 +35,8 @@ apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common
 # non-free intel driver (both decode and encode)
 # apt install intel-media-va-driver-non-free vainfo intel-gpu-tools
 #
-# the following will setup HDMI audio as default in ALSA
-# wget -O /etc/asound.conf https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/lxc_conf/etc/asound.conf
+# the following will setup DP-HDMI audio as default in ALSA; works for both PVE host and LXC
+# wget -O /etc/asound.conf https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/pve_lxc_scripts/setup/etc/lxc/etc/asound.conf
 #
 # on kodi hosts, install the following
 # apt install kodi-inputstream-adaptive
@@ -44,15 +48,24 @@ apt autoclean
 apt autoremove
 #
 echo
-echo Configuring shell...
+echo Configuring shell aliases for current user...
 echo
-# add aliases
-wget -O ~/.aliases https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/shell/dot_pve_aliases
+# add useful aliases to profile, works for bash and zsh
+wget -O ~/.aliases https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/pve_lxc_scripts/setup/home/dot_pve_aliases
 # source aliases in .profile after creating backup
 cp ~/.profile ~/.profile.bak
 echo "source ~/.aliases" >> ~/.profile
 echo
-echo Automounting NFS shares in /mnt/nfs-ssd
+# NFS shares and mounts
+#
+# Following is for PVE hosts only to export NFS shares
+#
+# echo "#share sata-ssd over nfs" >> /etc/exports
+# echo "/mnt/sata-ssd 10.100.100.0/24(rw,sync,no_subtree_check,no_root_squash,no_all_squash)" >> /etc/exports
+#
+# Following is for LXC clients only (need to be privileged, else will fail
+#
+echo Automounting NFS share mounts in /mnt/nfs-ssd
 echo
 cp /etc/auto.master /etc/auto.master.bak
 cp /etc/auto.mount /etc/auto.mount.bak
