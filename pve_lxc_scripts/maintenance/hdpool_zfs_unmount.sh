@@ -1,2 +1,3 @@
 #!/bin/sh
-zfs umount /hdpool
+# unmounts hdpool filesystem (does not remove the pool)
+zfs umount /hdpool/fs
