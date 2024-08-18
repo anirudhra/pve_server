@@ -48,8 +48,11 @@ systemctl restart $(basename $(dirname $GETTY_OVERRIDE) | sed 's/\.d//')
 
 Referenced from https://pve.proxmox.com/wiki/PCI(e)_Passthrough:
 
-1) Add "i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt" to /etc/default/grub "GRUB_CMDLINE_LINUX_DEFAULT"
-2) Run:
+1) Add the following to /etc/default/grub "GRUB_CMDLINE_LINUX_DEFAULT" to modify kernel command line:
+```
+i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt
+```
+2) Run to pick changes:
 ```
 upgrade-grub
 ```
@@ -60,12 +63,12 @@ vfio_iommu_type1
 vfio_pci
 vfio_virqfd #not needed if on kernel 6.2 or newer
 ```
-6) Run:
+6) Run to update initram:
 ```
 update-initramfs -u -k all
 ```
-8) Reboot
-9) Check (should see lines along Directed I/O):
+8) Reboot the machine
+9) Run following commands to veryify (should see lines along Directed I/O for IOMMMU):
 ```
 dmesg | grep -i -e DMAR -e IOMMU
 lsmod | grep -i vfio
