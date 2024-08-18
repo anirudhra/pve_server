@@ -36,7 +36,8 @@ apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common
 # following section is if you have iGPU passthrough in LXC
 # foss intel driver - install one of below (only decode)
 # apt install intel-media-va-driver vainfo intel-gpu-tools
-# non-free intel driver (both decode and encode)
+#
+# non-free intel driver (both decode and encode), need "non-free-firmware and non-free" repos in /etc/apt/sources.list else will fail
 # apt install intel-media-va-driver-non-free vainfo intel-gpu-tools
 #
 # the following will setup DP-HDMI audio as default in ALSA; works for both PVE host and LXC
