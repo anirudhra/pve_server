@@ -24,7 +24,7 @@ Use this command to run off github:
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/shell/install.sh)"
 ```
 
-Use this command to copy locally:
+Use this command to download locally:
 ```
 wget https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/shell/install.sh
 ```
@@ -76,7 +76,7 @@ cat /proc/cmdline
 ```
 
 ### Full Kernel Command line on PVE Server for reference
-/etc/default/grub: Kernel command line:
+Kernel command line from /etc/default/grub:
 ```
 BOOT_IMAGE=/boot/vmlinuz-6.8.12-1-pve root=/dev/mapper/pve-root ro quiet i915.enable_gvt=1 i915.enable_guc=3 intel_pstate=active intel_iommu=on iommu=pt
 ```
@@ -89,4 +89,4 @@ Copy of PVE Helper scripts from ttkek: https://tteck.github.io/Proxmox/
 
 ### mrrudy Kodi
 
-Kodi as PVE LXC from mrrudy: https://github.com/mrrudy/proxmoxHelper (modified here to additionally install kodi-inputstream-adaptive)
+Copy of Kodi installation PVE LXC from mrrudy: https://github.com/mrrudy/proxmoxHelper (modified here to additionally install kodi-inputstream-adaptive)
