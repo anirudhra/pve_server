@@ -17,7 +17,7 @@
 2) Adds useful set of aliases /home/(user)/.aliases
 3) Mounts NFS exports: /etc/auto.master, /etc/auto.mount
 
-## PVE Helper Scripts archives:
+## PVE Helper Scripts archives
 Repo also contains archives for popular PVE and LXC scripts from ttek and mrrudy (for kodi):
 
 ### ttek PVE
@@ -27,7 +27,7 @@ Copy of PVE Helper scripts from ttkek: https://tteck.github.io/Proxmox/
 
 Kodi as PVE LXC from mrrudy: https://github.com/mrrudy/proxmoxHelper (modified here to additionally install kodi-inputstream-adaptive)
 
-## LXC Environment automation:
+## LXC Environment automation
 
 Use this command to run off github:
 ```
