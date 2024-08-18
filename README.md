@@ -21,12 +21,12 @@
 
 Use this command to run off github:
 ```
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/shell/install.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/pve_lxc_scripts/setup/install.sh)"
 ```
 
 Use this command to download locally:
 ```
-wget https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/shell/install.sh
+wget https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/pve_lxc_scripts/setup/install.sh
 ```
 
 ## LXC autologin in PVE Console
