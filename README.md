@@ -56,6 +56,20 @@ If necessary append the following to grub CMDLINE:
 pcie_aspm=force
 ```
 
+## Power/Temperature monitoring
+
+Install and add powertune to autotune on startup through "crontab -e":
+
+```
+@reboot sleep 60 && /usr/sbin/powertop --auto-tune
+```
+
+Also add the following modules to /etc/modules:
+```
+coretemp
+drivetemp
+```
+
 ## Enabling IOMMU/VT-d Virtualization on PVE Server
 
 Referenced from https://pve.proxmox.com/wiki/PCI(e)_Passthrough:
