@@ -44,6 +44,18 @@ systemctl daemon-reload
 systemctl restart $(basename $(dirname $GETTY_OVERRIDE) | sed 's/\.d//')
 ```
 
+## PCIe Power Management: ASPM
+
+Check which devices support ASPM but not enabled
+```
+lspci -vv | awk '/ASPM/{print $0}' RS= | grep --color -P '(^[a-z0-9:.]+|ASPM )'
+```
+
+If necessary append the following to grub CMDLINE: 
+```
+pcie_aspm=force
+```
+
 ## Enabling IOMMU/VT-d Virtualization on PVE Server
 
 Referenced from https://pve.proxmox.com/wiki/PCI(e)_Passthrough:
@@ -76,7 +88,7 @@ cat /proc/cmdline
 ```
 
 ### Full Kernel Command line on PVE Server for reference
-Kernel command line from /etc/default/grub (remove i915.enable_gvt=1 if there are stability issues):
+Kernel command line from /etc/default/grub (remove i915.enable_gvt=1 if there are stability issues and add pcie_aspm=force if ASPM is not getting enabled automatically):
 ```
 BOOT_IMAGE=/boot/vmlinuz-6.8.12-1-pve root=/dev/mapper/pve-root ro quiet i915.enable_gvt=1 i915.enable_guc=2 intel_iommu=on iommu=pt
 ```
