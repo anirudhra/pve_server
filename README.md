@@ -70,6 +70,11 @@ coretemp
 drivetemp
 ```
 
+Run the following script to add detected CPU/HDD/NVMe sensors to PVE web page (may need after proxmox updates):
+```
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/pve_lxc_scripts/maintenance/pve-mod-gui-sensors.sh)"
+```
+
 ## Enabling IOMMU/VT-d Virtualization on PVE host
 
 Referenced from https://pve.proxmox.com/wiki/PCI(e)_Passthrough:
