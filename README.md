@@ -74,6 +74,7 @@ Run the following script to add detected CPU/HDD/NVMe sensors to PVE web page (m
 ```
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/pve_lxc_scripts/maintenance/pve-mod-gui-sensors.sh)"
 ```
+These scripts come from Meliox's excellent PVE mods repo: https://github.com/Meliox/PVE-mods
 
 ## Enabling IOMMU/VT-d Virtualization on PVE host
 
