@@ -91,7 +91,10 @@ alias dsclean='find . -type f -name .DS_Store -delete && find . -type f -name ._
 alias fullclean='apt clean && apt autoclean && apt autoremove'
 alias fullupdate='apt update && apt dist-upgrade' 
 
-alias gomedia='cd /mnt/ssd-usb/ssd-media/media'
+alias gomedia='cd /mnt/sata-ssd/ssd-media/media'
+alias godata='cd /mnt/sata-ssd/ssd-data'
+alias gopvedocker='cd /mnt/sata-ssd/ssd-data/dockerapps'
+alias godocker='cd /mnt/nfs-ssd/ssd-data/dockerapps'
 
 # Enable syntax-highlighting in less/cat
 # Note: needs source-highlight and highlight brew packages for these to work
