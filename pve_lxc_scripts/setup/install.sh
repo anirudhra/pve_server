@@ -25,7 +25,7 @@ echo
 echo Installing packages...
 echo
 # following section is for PVE host
-# apt install vim btop htop duf avahi-daemon avahi-utils alsa-utils cpufrequtils nfs-kernel-server lm-sensors drivetemp vainfo usbutils pciutils intel-gpu-tools autofs
+# apt install vim btop htop duf avahi-daemon avahi-utils alsa-utils cpufrequtils nfs-kernel-server lm-sensors drivetemp powertop vainfo usbutils pciutils intel-gpu-tools autofs
 #
 # following section is for PVE LXC
 apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common
