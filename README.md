@@ -1,6 +1,8 @@
 # HP Elitedesk 800 G4/G5 Desktop Mini as Server
 
+<br><br>
 ## Custom scripts for Proxmox host and LXC setup and maintenance
+<br><br>
 
 ### Proxmox Host:
 
@@ -16,6 +18,7 @@
 1) Sets DP/HDMI as default audio: /etc/asound.conf
 2) Adds useful set of aliases /home/(user)/.aliases
 3) Mounts NFS exports: /etc/auto.master, /etc/auto.mount
+<br><br>
 
 ## LXC Environment automation
 
@@ -28,6 +31,7 @@ Use this command to download locally:
 ```
 wget https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/pve_lxc_scripts/setup/install.sh
 ```
+<br><br>
 
 ## LXC autologin in PVE Console
 Type the following in LXC console to enable auto login:
@@ -43,6 +47,7 @@ EOF
 systemctl daemon-reload
 systemctl restart $(basename $(dirname $GETTY_OVERRIDE) | sed 's/\.d//')
 ```
+<br><br>
 
 ## PCIe Power Management on PVE host: ASPM
 
@@ -55,6 +60,7 @@ If necessary append the following to grub CMDLINE:
 ```
 pcie_aspm=force
 ```
+<br><br>
 
 ## Power/Temperature monitoring on PVE host
 
@@ -76,6 +82,8 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/anirudhra/hpe800g4dm_se
 ```
 These scripts come from Meliox's excellent PVE mods repo: https://github.com/Meliox/PVE-mods
 
+<br><br>
+
 ## GPU passthrough to LXC for HW acceleration (Jellyfin etc.)
 
 Add following line on PVE host at the end of /etc/pve/lxc/<lxcid>.conf:
@@ -96,6 +104,8 @@ sudo -u jellyfin ls -l /dev/dri
 References (more explanation: <br>
 https://github.com/jellyfin/jellyfin/issues/9390 <br>
 https://github.com/TheHellSite/proxmox_collection/tree/main/lxc/device_passthrough
+
+<br><br>
 
 ## Enabling IOMMU/VT-d Virtualization on PVE host
 
@@ -134,6 +144,8 @@ Kernel command line from /etc/default/grub (remove i915.enable_gvt=1 if there ar
 BOOT_IMAGE=/boot/vmlinuz-6.8.12-1-pve root=/dev/mapper/pve-root ro quiet i915.enable_gvt=1 i915.enable_guc=2 intel_iommu=on iommu=pt
 ```
 
+<br><br>
+
 ## Switching PVE host/LXC between default console and GUI boot modes (if GUI is installed)
 
 To set console/cli as default:
@@ -146,11 +158,15 @@ To set X11 login on boot as default:
 systemctl set-default graphical.target
 ```
 
+<br><br>
+
 ## Intel iGPU issues and solutions
 Note: More information here (may need to create explicit xorg conf): https://wiki.archlinux.org/title/Intel_graphics
 Wiki says enable_gvt=1 conflicts with any non-zero enable_guc option in kernal command line.
 
 <br>Also check this page for missing Intel iGPU firmware for certain models like Celeron etc.: https://wiki.debian.org/Firmware#Firmware_missing_from_Debian
+
+<br><br>
 
 ## PVE Helper Scripts archives
 Repo also contains archives of the excellent and much popular PVE and LXC scripts from ttek and mrrudy (for kodi):
