@@ -85,7 +85,7 @@ These scripts come from Meliox's excellent PVE mods repo: https://github.com/Mel
 
 ## GPU passthrough to LXC for HW acceleration (Jellyfin etc.)
 
-Add following line on PVE host at the end of /etc/pve/lxc/<lxcid>.conf. This will create a new host:lxc shared group to which devices can be added to for read-write permission from within LXC. Replace /dev/dri/card1 with card0 as appropriate (must match what's in /etc/pve/lxc/<lxc-id>.conf file on PVE host:
+Add following line on PVE host at the end of /etc/pve/lxc/<lxcid>.conf. This will create a new host:lxc shared group to which devices can be added to for read-write permission from within LXC. This is because sometimes the default groups (render and video) have wrong GID inside LXC and result in permission issues. Replace /dev/dri/card1 with card0 as appropriate (must match what's in /etc/pve/lxc/<lxc-id>.conf file on PVE host:
 ```
 lxc.hook.pre-start: sh -c "chown 100000:111000 /dev/dri/renderD128 && chown 100000:111000 /dev/dri/card1"
 ```
