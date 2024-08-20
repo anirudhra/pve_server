@@ -2,7 +2,6 @@
 
 <br><br>
 ## Custom scripts for Proxmox host and LXC setup and maintenance
-<br><br>
 
 ### Proxmox Host:
 
