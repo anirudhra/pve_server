@@ -78,18 +78,14 @@ These scripts come from Meliox's excellent PVE mods repo: https://github.com/Mel
 
 ## GPU passthrough to LXC for HW acceleration (Jellyfin etc.)
 
-Add following line on PVE host at the end of /etc/pve/lxc/<lxcid>.conf (do you need that for "card0/1" as well?)
+Add following line on PVE host at the end of /etc/pve/lxc/<lxcid>.conf:
 ```
-lxc.hook.pre-start: sh -c "chown 100000:111000 /dev/dri/renderD128"
+lxc.hook.pre-start: sh -c "chown 100000:111000 /dev/dri/renderD128 && chown 100000:111000 /dev/dri/card1"
 ```
 Run following commands on LXC:
 ```
 groupadd -g 111000 lxc_gpu_shares
 gpasswd -a jellyfin lxc_gpu_shares
-```
-
-Following may be necessary on LXC:
-```
 usermod -aG render jellyfin
 usermod -aG video jellyfin
 systemctl restart jellyfin
