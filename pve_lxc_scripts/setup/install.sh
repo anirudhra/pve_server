@@ -81,7 +81,7 @@ chmod 777 /mnt/nfs-ssd
 echo "# manually added for server" >> /etc/auto.master
 echo "/- /etc/auto.mount" >> /etc/auto.master
 echo "# nfs server mount" >> /etc/auto.mount
-echo "/mnt/nfs-ssd -fstype=nfs,rw 10.100.100.50:/mnt/sata-ssd" >> /etc/auto.mount
+echo "/mnt -fstype=nfs,rw 10.100.100.50:/mnt/sata-ssd" >> /etc/auto.mount
 systemctl daemon-reload
 systemctl restart autofs
 echo
