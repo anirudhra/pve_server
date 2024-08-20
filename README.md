@@ -1,5 +1,5 @@
 # HP Elitedesk 800 G4/G5 Desktop Mini as Server
-
+<p>
 ## Custom scripts for Proxmox host and LXC setup and maintenance
 
 ### Proxmox Host:
@@ -82,7 +82,8 @@ Add following line on PVE host at the end of /etc/pve/lxc/<lxcid>.conf:
 ```
 lxc.hook.pre-start: sh -c "chown 100000:111000 /dev/dri/renderD128 && chown 100000:111000 /dev/dri/card1"
 ```
-Run following commands on LXC:
+
+Run following commands on LXC (assumes username is jellyfin and the shared pve-lxc group name is lxc_gpu_shares that maps to the gid above):
 ```
 groupadd -g 111000 lxc_gpu_shares
 gpasswd -a jellyfin lxc_gpu_shares
@@ -92,8 +93,8 @@ systemctl restart jellyfin
 sudo -u jellyfin ls -l /dev/dri
 ```
 
-References (more explanation:
-https://github.com/jellyfin/jellyfin/issues/9390
+References (more explanation: <br>
+https://github.com/jellyfin/jellyfin/issues/9390 <br>
 https://github.com/TheHellSite/proxmox_collection/tree/main/lxc/device_passthrough
 
 ## Enabling IOMMU/VT-d Virtualization on PVE host
