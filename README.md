@@ -89,6 +89,7 @@ gpasswd -a jellyfin lxc_gpu_shares
 usermod -aG render jellyfin
 usermod -aG video jellyfin
 systemctl restart jellyfin
+sudo -u jellyfin ls -l /dev/dri
 ```
 
 References (more explanation:
