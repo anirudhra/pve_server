@@ -5,7 +5,7 @@
 
 ### Proxmox Host:
 
-1) UEFI 2.27 introduces an issue with displayport pin mapping by not activating pin 6 for audio in Linux and needs explicit patching until kernel includes it by default (not as of 6.8.12): /etc/modprobe.d/hda-jack-retask.conf, /usr/lib/firmware/hda-jack-retask.fw
+1) HP UEFI 2.27 update introduces an issue with displayport pin mapping by not activating pin 6 for audio in Linux and needs explicit patching until kernel includes it by default (not as of 6.8.12): /etc/modprobe.d/hda-jack-retask.conf, /usr/lib/firmware/hda-jack-retask.fw
 2) Sets DP/HDMI as default audio: /etc/asound.conf
 3) Adds useful set of aliases /home/(user)/.aliases
 4) Enables NFS exports: /etc/exports
