@@ -76,6 +76,22 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/anirudhra/hpe800g4dm_se
 ```
 These scripts come from Meliox's excellent PVE mods repo: https://github.com/Meliox/PVE-mods
 
+## GPU passthrough to LXC for HW acceleration (Jellyfin etc.)
+
+Add following line on PVE host at the end of /etc/pve/lxc/<lxcid>.conf (do you need that for "card0/1" as well?)
+```
+lxc.hook.pre-start: sh -c "chown 100000:111000 /dev/dri/renderD128"
+```
+Run following commands on LXC:
+```
+groupadd -g 111000 lxc_gpu_shares
+gpasswd -a jellyfin lxc_gpu_shares
+```
+
+References (more explanation:
+https://github.com/jellyfin/jellyfin/issues/9390
+https://github.com/TheHellSite/proxmox_collection/tree/main/lxc/device_passthrough
+
 ## Enabling IOMMU/VT-d Virtualization on PVE host
 
 Referenced from https://pve.proxmox.com/wiki/PCI(e)_Passthrough:
