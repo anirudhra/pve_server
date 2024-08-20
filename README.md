@@ -88,6 +88,13 @@ groupadd -g 111000 lxc_gpu_shares
 gpasswd -a jellyfin lxc_gpu_shares
 ```
 
+Following may be necessary on LXC:
+```
+usermod -aG render jellyfin
+usermod -aG video jellyfin
+systemctl restart jellyfin
+```
+
 References (more explanation:
 https://github.com/jellyfin/jellyfin/issues/9390
 https://github.com/TheHellSite/proxmox_collection/tree/main/lxc/device_passthrough
