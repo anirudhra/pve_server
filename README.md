@@ -164,7 +164,6 @@ Note: More information here (may need to create explicit xorg conf): https://wik
 Wiki says enable_gvt=1 conflicts with any non-zero enable_guc option in kernal command line.
 
 <br>Also check this page for missing Intel iGPU firmware for certain models like Celeron etc.: https://wiki.debian.org/Firmware#Firmware_missing_from_Debian
-
 <br><br>
 
 ## PVE Helper Scripts archives
