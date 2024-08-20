@@ -1,5 +1,5 @@
 # HP Elitedesk 800 G4/G5 Desktop Mini as Server
-<p>
+
 ## Custom scripts for Proxmox host and LXC setup and maintenance
 
 ### Proxmox Host:
