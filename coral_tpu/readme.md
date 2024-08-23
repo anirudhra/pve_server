@@ -8,11 +8,12 @@ git clone https://github.com/google/gasket-driver.git
 cd gasket-driver; debuild -us -uc -tc -b; cd ..
 ls -l gasket-dkms*
 dpkg -i gasket-dkms_1.0-18_all.deb
+ls /dev/apex*
 modprobe apex
 lsmod | grep apex
 ```
 
-Output should show following modules loaded:
+Output should show /dev/apex_0 device and following modules loaded:
 ```
 apex                   28672  0
 gasket                135168  1 apex
