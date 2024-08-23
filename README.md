@@ -14,6 +14,7 @@
 7) Adds additional /etc/modules for acpi health monitoring and Intel VT-d virtualization
 8) Includes GPU, Keyboard, Audio passthrough in LXC conf for reference: /etc/pve/lxc/lxc-id.conf
 9) Includes scritps for PVE host maintenance, backup-restore and other tweaks: /pve_maintenance (needs to be manually installed/pulled from github)
+10) Includes Coral TPU drivers, runtimes etc. for newer versions of Linux kernels, Python as standard Google repos no longer support any of those are stuck pre-Linux6.2 and Python 3.9
 
 ### LXC:
 
