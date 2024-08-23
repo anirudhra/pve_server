@@ -19,7 +19,9 @@ apex                   28672  0
 gasket                135168  1 apex
 ```
 
-Custom compiled versions are also available in these excellent repos: 
-https://github.com/feranick/libedgetpu
-https://github.com/feranick/pycoral
-https://github.com/feranick/TFlite-builds
+Also includes custom compiled versions of libedgetpu, pycoral and tflite as none from standard Google's repos are compatible with latest python3/linux kernel.
+
+More up-to-date compiled versions are also available in these excellent repos: 
+<br>https://github.com/feranick/libedgetpu
+<br>https://github.com/feranick/pycoral
+<br>https://github.com/feranick/TFlite-builds
