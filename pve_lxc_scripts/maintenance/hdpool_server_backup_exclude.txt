@@ -1,4 +1,5 @@
 ssd-media/media/cache
+ssd-media/jellyfin
 ssd-data/dockerapps/vega/navidrome/data/cache
 ssd-data/dockerapps/vega/lms/config/cache
 ssd-data/dockerapps/vega/kavita/data/backups
