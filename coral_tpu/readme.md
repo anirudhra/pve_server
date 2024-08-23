@@ -1,5 +1,7 @@
 ## Google Coral TPU M.2/PCIe Driver
 
+Follow installation instructions here until you reach gasket-dkms step: https://coral.ai/docs/m2/get-started/
+
 Kernel 6.2+ broke google's gasket-dkms Coral TPU driver and the official repo hasn't been update. Compiled driver is available here. Also, instructions for recompiling are provided as necessary. Instructions are from: https://github.com/google-coral/edgetpu/issues/808
 
 ```
