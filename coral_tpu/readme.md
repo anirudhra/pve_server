@@ -18,3 +18,8 @@ Output should show /dev/apex_0 device and following modules loaded:
 apex                   28672  0
 gasket                135168  1 apex
 ```
+
+Custom compiled versions are also available in these excellent repos: 
+https://github.com/feranick/libedgetpu
+https://github.com/feranick/pycoral
+https://github.com/feranick/TFlite-builds
