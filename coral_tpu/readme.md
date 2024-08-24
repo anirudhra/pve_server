@@ -31,8 +31,9 @@ modprobe apex
 lsmod | grep apex
 ```
 
-Output should show /dev/apex_0 device and following modules loaded:
+Output should show apex device and following modules loaded:
 ```
+/dev/apex_0
 apex                   28672  0
 gasket                135168  1 apex
 ```
