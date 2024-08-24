@@ -71,6 +71,19 @@ source ./<venv>/bin/activate
 <venv>/bin/python3 -m pip install tensorflow
 ```
 
+## Edge TPU repo
+
+Add Edge TPU repo and import key:
+
+```
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list
+apt-get update
+apt-get install edgetpu-compiler
+```
+
+This will allow you to install tools like Edge TPU compiler etc.
+
 ## Model visualization script
 
 Original source: https://raw.githubusercontent.com/tensorflow/tensorflow/master/tensorflow/lite/tools/visualize.py
