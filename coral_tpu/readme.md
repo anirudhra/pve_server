@@ -9,7 +9,7 @@ apt install devscripts debhelper dh-dkms -y
 git clone https://github.com/google/gasket-driver.git
 cd gasket-driver; debuild -us -uc -tc -b; cd ..
 ls -l gasket-dkms*
-dpkg -i gasket-dkms_1.0-18_all.deb
+dpkg -i gasket-dkms_1.0-18_all-<kernel>.deb
 ls /dev/apex*
 modprobe apex
 lsmod | grep apex
