@@ -17,7 +17,7 @@ For compiled drivers available in this repo, install as:
 dpkg -i gasket-dkms_1.0-18_all-kernel-6.2plus.deb
 ```
 
-For standard clocked TPU, install:
+Install one of the edge TPU libraries. DON'T install both. For standard clocked TPU, install:
 ```
 dpkg -i libedgetpu1-std_16.0tf2.17.0-1.ubuntu24.04_amd64.deb
 ```
