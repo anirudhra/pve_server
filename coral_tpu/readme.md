@@ -53,10 +53,22 @@ More up-to-date compiled versions are also available in these excellent repos:
 
 Instructions to install python 3.12 libraries provided in this repo (will only work with 3.12; for other versions download from the repos above). You need to install python<ver>-venv package for this work.
 
+One time venv creation:
 ```
-<venv_directory>/bin/python3 -m pip install ./tflite_runtime-2.17.0-cp312-cp312-linux_x86_64.whl
-<venv_directory>/bin/python3 -m pip install ./pycoral-2.0.2-cp312-cp312-linux_x86_64.whl
-<venv_directory>/bin/python3 -m pip install tensorflow
+mkdir <venv>
+cd <venv>
+python3 -m venv <venv>
+```
+
+Sourcing virtual environment every other time:
+```
+source ./<venv>/bin/activate
+```
+
+```
+<venv>/bin/python3 -m pip install ./tflite_runtime-2.17.0-cp312-cp312-linux_x86_64.whl
+<venv>/bin/python3 -m pip install ./pycoral-2.0.2-cp312-cp312-linux_x86_64.whl
+<venv>/bin/python3 -m pip install tensorflow
 ```
 
 ## Model visualization script
@@ -65,6 +77,6 @@ Original source: https://raw.githubusercontent.com/tensorflow/tensorflow/master/
 
 File included in this repo for convenience. Helps visualize tensorflow lite operations. Syntax:
 ```
-<venv_directory>/bin/python3 ./tflite_visualize.py <tflitemodel.tflite> <output.html>
+<venv>/bin/python3 ./tflite_visualize.py <tflitemodel.tflite> <output.html>
 ```
 Will produce <output.html> with tflite ops visualization
