@@ -48,7 +48,7 @@ More up-to-date compiled versions are also available in these excellent repos:
 <br>https://github.com/feranick/pycoral
 <br>https://github.com/feranick/TFlite-builds
 
-Instructions to install python libraries provided in this repo. You need to install python<ver>-venv package for this work.
+Instructions to install python 3.12 libraries provided in this repo (will only work with 3.12; for other versions download from the repos above). You need to install python<ver>-venv package for this work.
 
 ```
 <venv_directory>/bin/python3 -m pip install ./tflite_runtime-2.17.0-cp312-cp312-linux_x86_64.whl
