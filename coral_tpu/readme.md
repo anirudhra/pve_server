@@ -75,7 +75,7 @@ source ./<venv>/bin/activate
 
 Original source: https://raw.githubusercontent.com/tensorflow/tensorflow/master/tensorflow/lite/tools/visualize.py
 
-File included in this repo for convenience. Helps visualize tensorflow lite operations. Syntax:
+File included in this repo for convenience. Helps visualize tensorflow lite operations. Syntax (source venv activation first):
 ```
 <venv>/bin/python3 ./tflite_visualize.py <tflitemodel.tflite> <output.html>
 ```
