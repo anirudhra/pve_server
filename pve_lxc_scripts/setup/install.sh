@@ -76,8 +76,6 @@ echo Automounting NFS share mounts in /mnt/nfs-ssd
 echo
 cp /etc/auto.master /etc/auto.master.bak
 cp /etc/auto.mount /etc/auto.mount.bak
-mkdir -p /mnt/nfs-ssd
-chmod 777 /mnt/nfs-ssd
 echo "# manually added for server" >> /etc/auto.master
 echo "/- /etc/auto.mount" >> /etc/auto.master
 echo "# nfs server mount" >> /etc/auto.mount
