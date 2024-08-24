@@ -2,6 +2,7 @@
 
 Follow installation instructions here until you reach gasket-dkms step: https://coral.ai/docs/m2/get-started/
 
+## Kernel Driver
 Kernel 6.2+ broke google's gasket-dkms Coral TPU driver and the official repo hasn't been updated since. Compiled driver is provided in this repo. Also, instructions for recompiling are provided here: https://github.com/google-coral/edgetpu/issues/808
 
 ```
@@ -17,7 +18,9 @@ For compiled drivers available in this repo, install as:
 dpkg -i gasket-dkms_1.0-18_all-kernel-6.2plus.deb
 ```
 
-Install one of the edge TPU libraries. DON'T install both. For standard clocked TPU, install:
+## Edge TPU Library
+Install one of the included Edge TPU libraries. DON'T install both. For standard clocked TPU, install:
+
 ```
 dpkg -i libedgetpu1-std_16.0tf2.17.0-1.ubuntu24.04_amd64.deb
 ```
@@ -41,12 +44,12 @@ apex                   28672  0
 gasket                135168  1 apex
 ```
 
-Also includes custom compiled versions of libedgetpu, pycoral and tflite as none from standard Google's repos are compatible with latest python3/linux kernel.
-
 More up-to-date compiled versions are also available in these excellent repos: 
 <br>https://github.com/feranick/libedgetpu
 <br>https://github.com/feranick/pycoral
 <br>https://github.com/feranick/TFlite-builds
+
+## Installing python libraries
 
 Instructions to install python 3.12 libraries provided in this repo (will only work with 3.12; for other versions download from the repos above). You need to install python<ver>-venv package for this work.
 
@@ -55,3 +58,13 @@ Instructions to install python 3.12 libraries provided in this repo (will only w
 <venv_directory>/bin/python3 -m pip install ./pycoral-2.0.2-cp312-cp312-linux_x86_64.whl
 <venv_directory>/bin/python3 -m pip install tensorflow
 ```
+
+## Model visualization script
+
+Original source: https://raw.githubusercontent.com/tensorflow/tensorflow/master/tensorflow/lite/tools/visualize.py
+
+File included in this repo for convenience. Helps visualize tensorflow lite operations. Syntax:
+```
+<venv_directory>/bin/python3 ./tflite_visualize.py <tflitemodel.tflite> <output.html>
+```
+Will produce <output.html> with tflite ops visualization
