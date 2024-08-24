@@ -2,7 +2,7 @@
 
 Follow installation instructions here until you reach gasket-dkms step: https://coral.ai/docs/m2/get-started/
 
-Kernel 6.2+ broke google's gasket-dkms Coral TPU driver and the official repo hasn't been update. Also, instructions for recompiling are provided as necessary. Instructions are from: https://github.com/google-coral/edgetpu/issues/808
+Kernel 6.2+ broke google's gasket-dkms Coral TPU driver and the official repo hasn't been updated since. Compiled driver is provided in this repo. Also, instructions for recompiling are provided here: https://github.com/google-coral/edgetpu/issues/808
 
 ```
 apt install devscripts debhelper dh-dkms -y
@@ -12,15 +12,18 @@ ls -l gasket-dkms*
 dpkg -i gasket-dkms_1.0-18_all-<kernel>.deb
 ```
 
-Compiled driver is available here in this repo (gasket-dkms_1.0-18_all-kernel-6.2plus.deb). Install the following:
+For compiled drivers available in this repo, install as:
+```
+dpkg -i gasket-dkms_1.0-18_all-kernel-6.2plus.deb
+```
 
-For standard clocked TPU:
+For standard clocked TPU, install:
 ```
-libedgetpu1-std_16.0tf2.17.0-1.ubuntu24.04_amd64.deb
+dpkg -i libedgetpu1-std_16.0tf2.17.0-1.ubuntu24.04_amd64.deb
 ```
-OR for max clocked TPU (install good cooling):
+OR for max clocked TPU (ensure good cooling), install:
 ```
-libedgetpu1-max_16.0tf2.17.0-1.ubuntu24.04_amd64.deb
+dpkg -i libedgetpu1-max_16.0tf2.17.0-1.ubuntu24.04_amd64.deb
 ```
 
 After install, verify by:
