@@ -2,7 +2,7 @@
 
 Follow installation instructions here until you reach gasket-dkms step: https://coral.ai/docs/m2/get-started/
 
-Kernel 6.2+ broke google's gasket-dkms Coral TPU driver and the official repo hasn't been update. Compiled driver is available here. Also, instructions for recompiling are provided as necessary. Instructions are from: https://github.com/google-coral/edgetpu/issues/808
+Kernel 6.2+ broke google's gasket-dkms Coral TPU driver and the official repo hasn't been update. Also, instructions for recompiling are provided as necessary. Instructions are from: https://github.com/google-coral/edgetpu/issues/808
 
 ```
 apt install devscripts debhelper dh-dkms -y
@@ -10,6 +10,11 @@ git clone https://github.com/google/gasket-driver.git
 cd gasket-driver; debuild -us -uc -tc -b; cd ..
 ls -l gasket-dkms*
 dpkg -i gasket-dkms_1.0-18_all-<kernel>.deb
+```
+
+Compiled driver is available here in this repo (gasket-dkms_1.0-18_all-kernel6.2plus.deb). After install, verify by:
+
+```
 ls /dev/apex*
 modprobe apex
 lsmod | grep apex
