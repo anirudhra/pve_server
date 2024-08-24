@@ -18,6 +18,17 @@ For compiled drivers available in this repo, install as:
 dpkg -i gasket-dkms_1.0-18_all-kernel-6.2plus.deb
 ```
 
+## For VM pass-through, blacklist modules on PVE host:
+
+Add the following to /etc/modprobe.d/blacklist-apex.conf and reboot PVE host:
+
+```
+# only blacklist for passthru to VM. Need these for LXC
+blacklist gasket
+blacklist apex
+options vfio-pci ids=1ac1:089a
+```
+
 ## Edge TPU Library
 Install one of the included Edge TPU libraries. DON'T install both. For standard clocked TPU, install:
 
