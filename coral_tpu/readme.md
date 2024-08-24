@@ -20,7 +20,7 @@ dpkg -i gasket-dkms_1.0-18_all-kernel-6.2plus.deb
 
 ## For VM pass-through, blacklist modules on PVE host:
 
-Add the following to /etc/modprobe.d/blacklist-apex.conf and reboot PVE host:
+Add the following to /etc/modprobe.d/blacklist-apex.conf and reboot PVE host. These should not be added if LXC will have access to TPU, instead all installation steps mentioned in this page must be carried out on the host.
 
 ```
 # only blacklist for passthru to VM. Need these for LXC
