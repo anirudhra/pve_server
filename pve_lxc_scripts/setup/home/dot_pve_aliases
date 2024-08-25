@@ -153,15 +153,31 @@ alias updateboot='update-grub && update-initramfs -u -k all'
 alias booterrors='journalctl  -b 0 -p 3'
 
 ######## functions ######################
+
 mkcd()
 {
     case $# in
     1)
-        mkdir -p $1
-        cd $1
+        mkdir -p "$1"
+        cd "$1"
         ;;
     *)
-        echo "USAGE : mkcd rep"
+        echo "USAGE : mkcd <directory>"
         ;;
     esac
 }
+
+movemovie()
+{
+    case $# in
+    1)
+        chmod 777 "$1"
+        chown -R nobody:nogroup "$1"
+        mv "$1" /mnt/sata-ssd/ssd-media/media/video/MyMovies
+        ;;
+    *)
+        echo "USAGE : movemovie <movie_dir>"
+        ;;
+    esac
+}
+
