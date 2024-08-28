@@ -15,4 +15,6 @@ cd /app/www
 php artisan register:app <app>
 ```
 
-Ensure there is "artisan" inside the /app/www folder (else go to the correct folder)
+Ensure there is "artisan" inside the /app/www folder (else go to the correct folder). Note that this is a recent change not reflected in instructions below.
+
+References: https://home-automation-india.github.io/docker-and-self-hosted-apps/heimdall/
