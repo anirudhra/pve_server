@@ -1,3 +1,6 @@
 #share sata-ssd over nfs
-/mnt/sata-ssd 10.100.100.0/24(rw,sync,no_subtree_check,no_root_squash,no_all_squash)
+# disabling following line as docker containers have permission issues writing to nfs share
+# /mnt/sata-ssd 10.100.100.0/24(rw,sync,no_subtree_check,no_root_squash,no_all_squash)
+# add following instead to resolve write permission issues, set all accesses to nobody:nogroup from clients
+/mnt/sata-ssd 10.100.100.0/24(rw,sync,no_subtree_check,all_squash,anonuid=65534,anongid=65534)
 
