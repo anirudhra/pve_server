@@ -30,15 +30,6 @@ alias mkdir='mkdir -pv'
 alias md='mkdir'
 alias rd='rmdir'
 
-##################
-alias please='sudo $( history -p !! )'
-alias gh='history | grep'
-alias count='find . -type f | wc -l'
-alias listps='ps aux | grep -v "ps aux" | grep -Ev "\[.+\]" | grep -v grep'
-alias diskuse="echo 'Device          Size  Used  Free  Mount Point' && df -h --output=source,size,used,avail,target | grep dev/root | sort"
-
-##########################
-
 alias path='echo -e ${PATH//:/\\n}'
 alias now='date +"%T"'
 alias nowtime=now
@@ -51,6 +42,7 @@ alias please='sudo $( history -p !! )'
 alias gh='history | grep'
 alias count='find . -type f | wc -l'
 alias listps='ps aux | grep -v "ps aux" | grep -Ev "\[.+\]" | grep -v grep'
+alias diskuse="echo 'Device          Size  Used  Free  Mount Point' && df -h --output=source,size,used,avail,target | grep dev/root | sort"
 
 ## get top process eating memory
 alias psmem='ps aux | sort -nr -k 4'
