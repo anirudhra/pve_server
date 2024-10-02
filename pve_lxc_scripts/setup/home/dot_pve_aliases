@@ -3,10 +3,10 @@ alias ls='ls --color=auto -FG'
 #export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
 ## Use a long listing format ##
-alias ll='ls -la | less'
+alias ll='ls -la --color | less -R'
  
 ## Show hidden files ##
-alias ls.='ls -d -FG .*'
+alias ls.='ls -d -FG --color=auto .*'
 
 ## get rid of command not found ##
 alias cd..='cd ..'
