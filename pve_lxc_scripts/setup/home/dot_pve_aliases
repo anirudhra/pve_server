@@ -1,5 +1,5 @@
 ## Colorize the ls output ##
-alias ls='ls -FG'
+alias ls='ls --color=auto -FG'
 #export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
 ## Use a long listing format ##
