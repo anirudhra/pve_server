@@ -40,7 +40,7 @@ apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common
 # apt install intel-media-va-driver vainfo intel-gpu-tools
 #
 # non-free intel driver (both decode and encode), need "non-free-firmware and non-free" repos in /etc/apt/sources.list else will fail
-# apt install intel-media-va-driver-non-free vainfo intel-gpu-tools
+apt install intel-media-va-driver-non-free vainfo intel-gpu-tools
 #
 # the following will setup DP-HDMI audio as default in ALSA; works for both PVE host and LXC
 # wget -O /etc/asound.conf https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/pve_lxc_scripts/setup/etc/lxc/etc/asound.conf
@@ -76,12 +76,15 @@ echo Automounting NFS share mounts in /mnt/nfs-ssd
 echo
 cp /etc/auto.master /etc/auto.master.bak
 cp /etc/auto.mount /etc/auto.mount.bak
+mkdir -p /mnt/server
+chmod 777 /mnt/server
 echo "# manually added for server" >> /etc/auto.master
 echo "/- /etc/auto.mount" >> /etc/auto.master
 echo "# nfs server mount" >> /etc/auto.mount
-echo "/mnt -fstype=nfs,rw 10.100.100.50:/mnt/sata-ssd" >> /etc/auto.mount
+echo "/mnt/server -fstype=nfs,rw 10.100.100.50:/mnt/sata-ssd" >> /etc/auto.mount
 systemctl daemon-reload
 systemctl restart autofs
 echo
 echo "Done! Logout and log back in for changes"
 echo
+
