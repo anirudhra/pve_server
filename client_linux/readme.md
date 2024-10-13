@@ -2,7 +2,8 @@ Need power management fixes for wifi/bt for suspend: https://wiki.debian.org/Ins
 
 Need to add 'non-free' repos to all lines in /etc/apt/sources.list
 
-Also need to install bluez-firmware for BT to work.
+Also need to install bluez-firmware for BT to work. Additionally check this:
+https://github.com/leifliddy/macbook12-bluetooth-driver
 
 Install "tlp" package and enable "tlp.service" for dynamic power management and disable usb input devices from powering down.
 
