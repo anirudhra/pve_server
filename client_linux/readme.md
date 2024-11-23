@@ -10,7 +10,7 @@ https://github.com/leifliddy/macbook12-bluetooth-driver
 Install "tlp" package and enable "tlp.service" for dynamic power management and disable usb input devices from powering down.
 
 ```
-sudo apt install tlp htop btop avahi-daemon cifs-utils nfs-common vim bluez-firmware
+sudo apt install tlp htop btop avahi-daemon cifs-utils nfs-common vim bluez-firmware systemd-resolved
 ```
 
 Unset git proxy for DNS errors:
