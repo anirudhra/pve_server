@@ -1,7 +1,14 @@
 # HP Elitedesk 800 G4/G5 Desktop Mini as Server
+# Macbook Pro 13 2015 as Client
 
 <br><br>
 ## Custom scripts for Proxmox host and LXC setup and maintenance
+
+### Macbook Pro Client:
+Additional readme provided in the "client" directory.
+
+### Debian 12
+Debian 12 remove systemd-resolve package by default and it needs to be manually installed.
 
 ### Proxmox Host:
 
