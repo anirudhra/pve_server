@@ -5,10 +5,10 @@
 ## Custom scripts for Proxmox host and LXC setup and maintenance
 
 ### Macbook Pro Client:
-Additional readme provided in the "client" directory.
+Additional readme provided in the "client_linux" directory.
 
 ### Debian 12
-Debian 12 remove systemd-resolve package by default and it needs to be manually installed.
+Debian 12 remove "systemd-resolved" package by default and it needs to be manually installed, else DNS resolve may not work from command line.
 
 ### Proxmox Host:
 
