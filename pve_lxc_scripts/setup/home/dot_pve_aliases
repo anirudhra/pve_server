@@ -102,15 +102,14 @@ alias fullupdate='apt update && apt dist-upgrade'
 alias gomedia='cd /mnt/sata-ssd/ssd-media/media'
 alias godata='cd /mnt/sata-ssd/ssd-data'
 alias gopvedocker='cd /mnt/sata-ssd/ssd-data/dockerapps'
-#alias godocker='cd /opt/dockerapps'
 #alias dockerbackup='sudo tar -zcvf ~/dockerapps.tar.gz /opt/dockerapps'
 
 # on LXC
-alias godocker='cd /mnt/ssd-data/dockerapps'
+alias godocker='cd /mnt/ssd-data/dockerapps && cd `hostname`'
 alias dockerup='docker compose up -d'
 alias dockerdown='docker compose down'
 alias dockerrestart='docker compose down && docker compose up -d'
-alias dockerupdate='docker compose down && docker compose pull && docker compose up -d --remove-orphans && docker image prune'
+alias dockerupdate='docker compose down && docker compose pull && docker compose up -d --remove-orphans && docker image prune -f && docker system prune --volumes'
 alias dockerbackup='sudo tar -zcvf ~/dockerapps.tar.gz /mnt/ssd-data/dockerapps'
 alias dockerclean='docker system prune --volumes'
 
@@ -174,3 +173,11 @@ movemovie()
     esac
 }
 
+dockerupdateall()
+{
+    cd /mnt/ssd-data/dockerapps
+    cd `hostname`
+    find . -maxdepth 1 -type d \( ! -name . \) -not -path '*disabled*' -exec bash -c "cd '{}' && pwd && docker compose down && docker compose pull && docker compose up -d --remove-orphans" \;
+    docker image prune -a -f
+    docker system prune --volumes  
+}
