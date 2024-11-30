@@ -44,6 +44,16 @@ wget https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/pve_lxc_
 ```
 <br><br>
 
+## LXC/VM Dockerup "all update" automation
+
+Recursively updates all docker images and prunes if the directory does not have "disabled" in the name anywhere:
+
+```
+godocker
+cd `hostname`
+find . -maxdepth 1 -type d \( ! -name . \) -not -path '*disabled*' -exec bash -c "cd '{}' && pwd && docker compose down && docker compose pull && docker image prune && docker compose up -d --remove-orphans" \;
+```
+
 ## LXC autologin in PVE Console
 Type the following in LXC console to enable auto login:
 
