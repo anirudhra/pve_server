@@ -51,7 +51,7 @@ Recursively updates all docker images and prunes if the directory does not have 
 ```
 godocker
 cd `hostname`
-find . -maxdepth 1 -type d \( ! -name . \) -not -path '*disabled*' -exec bash -c "cd '{}' && pwd && docker compose down && docker compose pull && docker image prune && docker compose up -d --remove-orphans" \;
+find . -maxdepth 1 -type d \( ! -name . \) -not -path '*disabled*' -exec bash -c "cd '{}' && pwd && docker compose down && docker compose pull && docker image prune -a -f && docker compose up -d --remove-orphans" \;
 ```
 
 ## LXC autologin in PVE Console
