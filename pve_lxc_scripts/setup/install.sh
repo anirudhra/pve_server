@@ -28,7 +28,7 @@ echo
 # apt install vim btop htop duf avahi-daemon avahi-utils alsa-utils cpufrequtils nfs-kernel-server lm-sensors powertop vainfo usbutils pciutils intel-gpu-tools autofs
 #
 # following section is for PVE LXC
-apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common
+apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common wavemon
 #
 # following section is for PVE host or if you have audio passthrough in LXC
 # apt install alsa-utils
