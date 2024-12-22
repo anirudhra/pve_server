@@ -33,7 +33,7 @@ sudo dnf group update core -y
 
 sudo dnf remove thermald
 
-sudo dnf install s-tui stress throttled zsh gnome-tweaks gnome-extensions-app btop duf avahi-daemon avahi-utils cpufrequtils lm_sensors powertop vainfo usbutils pciutils intel-gpu-tools autofs neovim tlp tlp-rdw wavemon smartmontools
+sudo dnf install s-tui stress throttled nfs-utils zsh gnome-tweaks gnome-extensions-app btop duf avahi-daemon avahi-utils cpufrequtils lm_sensors powertop vainfo usbutils pciutils autofs neovim tlp tlp-rdw wavemon smartmontools
 #
 # following section is for PVE LXC
 # apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common wavemon
@@ -87,9 +87,9 @@ sudo cp /etc/auto.mount /etc/auto.mount.bak
 sudo mkdir -p /mnt/server
 sudo chmod 777 /mnt/server
 sudo echo "# manually added for server" >> /etc/auto.master
-sudo echo "/- /etc/auto.mount" >> /etc/auto.master
-sudo echo "# nfs server mount" >> /etc/auto.mount
-sudo echo "/mnt/server -fstype=nfs,rw 10.100.100.50:/mnt/sata-ssd" >> /etc/auto.mount
+sudo echo "/- /etc/auto.pveshare" >> /etc/auto.master
+sudo echo "# nfs server mount" >> /etc/auto.pveshare
+sudo echo "/mnt/server -rw,fstype=nfs4 10.100.100.50:/mnt/sata-ssd" >> /etc/auto.pveshare
 sudo systemctl daemon-reload
 sudo systemctl restart autofs
 echo
