@@ -107,6 +107,7 @@ alias fullclean='sudo dnf clean all && sudo dnf autoremove'
 alias fullupdate='sudo dnf update --refresh && sudo dnf upgrade'
 alias distupgrade='sudo dnf update --refresh && sudo dnf distro-sync'
 alias fwupdate='sudo fwupdmgr refresh --force && sudo fwupdmgr get-updates && sudo fwupdmgr update'
+alias checkfw='sudo fwupdmgr get-devices'
 
 alias sysinfo='sudo inxi -Fzx'
 
@@ -158,6 +159,8 @@ alias updateboot='sudo update-grub && sudo update-initramfs -u -k all'
 alias booterrors='sudo journalctl  -b 0 -p 3'
 alias reservice='sudo systemctl daemon-reload'
 
+alias showkernel='sudo rpm -q kernel-core && uname -a'
+
 ######## functions ######################
 
 mkcd()
@@ -194,5 +197,10 @@ dockerupdateall()
     find . -maxdepth 1 -type d \( ! -name . \) -not -path '*disabled*' -exec bash -c "cd '{}' && pwd && docker compose down && docker compose pull && docker compose up -d --remove-orphans" \;
     docker image prune -a -f
     docker system prune --volumes -f
+}
+
+cleanlocales()
+{
+     sudo find /usr/share/locale/* -maxdepth 0 -type d -not -iname "en*" -exec rm -r {}
 }
 
