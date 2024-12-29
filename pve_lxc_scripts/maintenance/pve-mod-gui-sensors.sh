@@ -342,7 +342,7 @@ Ext.define('PVE.mod.TempHelper', {\n\
 		itemId: 'thermalCpu',\n\
 		colspan: 2,\n\
 		printBar: false,\n\
-		title: gettext('CPU Thermal State'),\n\
+		title: gettext('CPU Thermals'),\n\
 		iconCls: 'fa fa-fw fa-thermometer-half',\n\
 		textField: 'sensorsOutput',\n\
 		renderer: function(value){\n\
@@ -430,7 +430,7 @@ Ext.define('PVE.mod.TempHelper', {\n\
 		itemId: 'thermalHdd',\n\
 		colspan: 2,\n\
 		printBar: false,\n\
-		title: gettext('HDD/SSD Thermal State'),\n\
+		title: gettext('SSD Thermals'),\n\
 		iconCls: 'fa fa-fw fa-thermometer-half',\n\
 		textField: 'sensorsOutput',\n\
 		renderer: function(value) {\n\
@@ -493,7 +493,7 @@ Ext.define('PVE.mod.TempHelper', {\n\
 		itemId: 'thermalNvme',\n\
 		colspan: 2,\n\
 		printBar: false,\n\
-		title: gettext('NVMe Thermal State'),\n\
+		title: gettext('NVMe Thermals'),\n\
 		iconCls: 'fa fa-fw fa-thermometer-half',\n\
 		textField: 'sensorsOutput',\n\
 		renderer: function(value) {\n\
