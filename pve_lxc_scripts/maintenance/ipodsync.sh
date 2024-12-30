@@ -37,6 +37,7 @@ ipod_playlistsdir="${ipod_mountdir}/Playlists"
 #fi
 
 # manually mount instead of auto, too many corne cases for now
+ls ${ipod_mountdir}
 echo "==============================================================================="
 echo "Ensure your iPod is mounted at /mnt/ipod before running this script"
 read -p "If not, precc Ctrl+C to exit, mount and rerun. Else Press Enter to continue" -n1 -s
@@ -45,8 +46,7 @@ echo "==========================================================================
 #umount $ipod_device
 #mkdir -p "${ipod_mountdir}"
 #mount ${ipod_device} ${ipod_mountdir}
-
-ls ${ipod_mountdir}
+#ls ${ipod_mountdir}
 
 # sync playlists and music with progress shown
 # don't forget the trailing '/' for $ipod_mountdir!
