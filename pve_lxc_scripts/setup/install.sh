@@ -25,7 +25,7 @@ echo
 echo Installing packages...
 echo
 # following section is for PVE host
-# apt install vim btop htop duf avahi-daemon avahi-utils alsa-utils cpufrequtils nfs-kernel-server lm-sensors powertop usbutils pciutils autofs screen tmux iperf3 reptyr
+# apt install vim btop htop duf git gh avahi-daemon avahi-utils alsa-utils cpufrequtils nfs-kernel-server lm-sensors powertop usbutils pciutils autofs screen tmux iperf3 reptyr
 #
 # following section is for PVE LXC
 apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common wavemon tmux reptyr screen
@@ -61,7 +61,7 @@ echo
 wget -O ~/.aliases https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/pve_lxc_scripts/setup/home/dot_pve_aliases
 # source aliases in .profile after creating backup
 cp ~/.profile ~/.profile.bak
-echo "source ~/.aliases" >> ~/.profile
+echo "source ~/.aliases" >>~/.profile
 echo
 # NFS shares and mounts
 #
@@ -78,13 +78,12 @@ cp /etc/auto.master /etc/auto.master.bak
 cp /etc/auto.mount /etc/auto.mount.bak
 mkdir -p /mnt/server
 chmod 777 /mnt/server
-echo "# manually added for server" >> /etc/auto.master
-echo "/- /etc/auto.mount" >> /etc/auto.master
-echo "# nfs server mount" >> /etc/auto.mount
-echo "/mnt/server -fstype=nfs,rw 10.100.100.50:/mnt/sata-ssd" >> /etc/auto.mount
+echo "# manually added for server" >>/etc/auto.master
+echo "/- /etc/auto.mount" >>/etc/auto.master
+echo "# nfs server mount" >>/etc/auto.mount
+echo "/mnt/server -fstype=nfs,rw 10.100.100.50:/mnt/sata-ssd" >>/etc/auto.mount
 systemctl daemon-reload
 systemctl restart autofs
 echo
 echo "Done! Logout and log back in for changes"
 echo
-
