@@ -36,10 +36,16 @@ ipod_playlistsdir="${ipod_mountdir}/Playlists"
 #    exit
 #fi
 
+# manually mount instead of auto, too many corne cases for now
+echo "==============================================================================="
+echo "Ensure your iPod is mounted at /mnt/ipod before running this script"
+read -p "If not, precc Ctrl+C to exit, mount and rerun. Else Press Enter to continue" -n1 -s
+echo "==============================================================================="
 # unmount, create mount point (failsafe) and mount ipod
-umount $ipod_device
-mkdir -p "${ipod_mountdir}"
-mount ${ipod_device} ${ipod_mountdir}
+#umount $ipod_device
+#mkdir -p "${ipod_mountdir}"
+#mount ${ipod_device} ${ipod_mountdir}
+
 ls ${ipod_mountdir}
 
 # sync playlists and music with progress shown
@@ -50,6 +56,7 @@ rsync -rlptDvP --delete ${source_playlistsdir} ${ipod_mountdir}/
 rsync -rlptDvP --delete ${source_musicdir} ${ipod_mountdir}/
 
 # done
+echo
 echo "==============================================================================="
 echo " All done. Manually unmount iPod after verifying with the command: "
 echo " umount ${ipod_device} "
