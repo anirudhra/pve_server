@@ -19,8 +19,9 @@ ipod_device="/dev/sdb1"
 ipod_musicdir="${ipod_mountdir}/music"
 ipod_playlistsdir="${ipod_mountdir}/Playlists"
 
+######################################################################3
 # Check if iPod is attached
-# FIXME: Fix this section later
+# FIXME: Fix this entire section later
 #ipod7g_devid="05ac:1261"
 #ipod5g_devid="05ac:1262" #FIXME
 
@@ -35,26 +36,33 @@ ipod_playlistsdir="${ipod_mountdir}/Playlists"
 #    echo "No iPod found!"
 #    exit
 #fi
+######################################################################3
 
-# manually mount instead of auto, too many corne cases for now
-ls ${ipod_mountdir}
-echo "==============================================================================="
-echo "Ensure your iPod is mounted at /mnt/ipod before running this script"
-read -p "If not, precc Ctrl+C to exit, mount and rerun. Else Press Enter to continue" -n1 -s
-echo "==============================================================================="
+######################################################################3
 # unmount, create mount point (failsafe) and mount ipod
 #umount $ipod_device
 #mkdir -p "${ipod_mountdir}"
 #mount ${ipod_device} ${ipod_mountdir}
 #ls ${ipod_mountdir}
 
+# manually mount instead of auto, too many corne cases for now
+# ipod7g has /dev/sdX1 as the partition while ipod5g has /dev/sdX2 as the partition
+echo
+echo "==============================================================================="
+echo "Ensure your iPod is mounted at /mnt/ipod before running this script"
+read -p "If not, precc Ctrl+C to exit, mount and rerun. Else Press Enter to continue" -n1 -s
+echo "==============================================================================="
+
+######################################################################3
 # sync playlists and music with progress shown
 # don't forget the trailing '/' for $ipod_mountdir!
 # Can't use -a (which is collection of options) because owner and group are not supported on iPod and will throw errors
 rsync -rlptDvP --delete ${source_playlistsdir} ${ipod_mountdir}/
 
+# sync music files
 rsync -rlptDvP --delete ${source_musicdir} ${ipod_mountdir}/
 
+######################################################################3
 # done
 echo
 echo "==============================================================================="
