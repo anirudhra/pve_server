@@ -49,3 +49,9 @@ rsync -rlptDvP --delete ${source_playlistsdir} ${ipod_mountdir}/
 
 rsync -rlptDvP --delete ${source_musicdir} ${ipod_mountdir}/
 
+# done
+echo "==============================================================================="
+echo " All done. Manually unmount iPod after verifying with the command: "
+echo " umount ${ipod_device} "
+echo "==============================================================================="
+echo
