@@ -25,10 +25,10 @@ echo
 echo Installing packages...
 echo
 # following section is for PVE host
-# apt install vim btop htop duf git gh avahi-daemon avahi-utils alsa-utils cpufrequtils nfs-kernel-server lm-sensors powertop usbutils pciutils autofs screen tmux iperf3 reptyr
+# apt install vim btop htop duf git gh avahi-daemon avahi-utils alsa-utils cpufrequtils nfs-kernel-server lm-sensors powertop usbutils pciutils autofs screen tmux iperf3 reptyr ncdu
 #
 # following section is for PVE LXC
-apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common wavemon tmux reptyr screen
+apt install vim btop htop duf avahi-daemon avahi-utils autofs nfs-common wavemon tmux reptyr screen ncdu
 #
 # following section is for PVE host or if you have audio passthrough in LXC
 # apt install alsa-utils
