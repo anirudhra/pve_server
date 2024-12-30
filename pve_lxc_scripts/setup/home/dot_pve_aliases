@@ -1,12 +1,25 @@
+## ls aliases
 ## Colorize the ls output ##
 alias ls='ls --color=auto -FG'
 #export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
-
 ## Use a long listing format ##
 alias ll='ls -la --color | less -R'
- 
 ## Show hidden files ##
+alias ll.='ls -l -d -FG --color=auto .* | less'
 alias ls.='ls -d -FG --color=auto .*'
+alias l='ls -lFh'     #size,show type,human readable
+alias la='ls -lAFh'   #long list,show almost all,show type,human readable
+alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
+alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
+alias ldot='ls -ld .*'
+alias lS='ls -1FSsh'
+alias lart='ls -1Fcart'
+alias lrt='ls -1Fcrt'
+alias lsr='ls -lARFh' #Recursive list of files and directories
+alias lsn='ls -1'     #A column contains name of files and directories
+
+alias zshrc='${=EDITOR} ${$HOME}/.zshrc' # Quick access to the .zshrc file
+alias bashrc='${=EDITOR} ${$HOME}/.bashrc' # Quick access to the .bashrc file
 
 ## get rid of command not found ##
 alias cd..='cd ..'
@@ -25,35 +38,60 @@ alias grep='grep --color=auto'
 alias grepc='grep --color=always'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
+alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
+alias hgrep="fc -El 0 | grep"
+alias greph='history | grep'
+alias h='history'
 
+#directory related aliases
 alias mkdir='mkdir -pv'
 alias md='mkdir'
 alias rd='rmdir'
 
 alias path='echo -e ${PATH//:/\\n}'
 alias now='date +"%T"'
-alias nowtime=now
+alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'
 alias a='alias'
 
+#git
+alias gitpush="git pull && git add * && git commit -a && git push"
+
 #console
-alias mkdir='mkdir -p'
 alias please='sudo $( history -p !! )'
-alias gh='history | grep'
 alias count='find . -type f | wc -l'
 alias listps='ps aux | grep -v "ps aux" | grep -Ev "\[.+\]" | grep -v grep'
 alias diskuse="echo 'Device          Size  Used  Free  Mount Point' && df -h --output=source,size,used,avail,target | grep dev/root | sort"
+alias free='free -h'
+
+# Command line head / tail shortcuts
+alias -g H='| head'
+alias -g T='| tail'
+alias -g G='| grep'
+alias -g L="| less"
+alias -g M="| most"
+alias -g LL="2>&1 | less"
+alias -g CA="2>&1 | cat -A"
+alias -g NE="2> /dev/null"
+alias -g NUL="> /dev/null 2>&1"
+
+alias dud='du -d 1 -h'
+(( $+commands[duf] )) || alias duf='du -sh *'
+(( $+commands[fd] )) || alias fd='find . -type d -name'
+alias ff='find . -type f -name'
+
+alias help='man'
+alias sortnr='sort -n -r'
+alias unexport='unset'
+
+#file aliases
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
 
 ## get top process eating memory
 alias psmem='ps aux | sort -nr -k 4'
 alias psmem10='ps aux | sort -nr -k 4 | head -10'
-
-# network related
-# Stop after sending count ECHO_REQUEST packets #
-alias ping='ping -c 5'
-# Do not wait interval 1 second, go fast #
-alias fastping='ping -c 100 -s.2'
-alias ports='netstat -tulanp'
 
 # become root #
 alias root='sudo -i'
@@ -71,11 +109,13 @@ alias df='df -P -h'
 alias du='du -ch'
 
 # editor aliases
-#alias vim='nano'
-#alias vi='nano'
 alias vi='vim'
 alias gvim='vim'
-alias sudovi='sudo vi'
+alias vis='vim "+set si"'
+alias sudovi='sudo vim'
+alias edit="vim"
+alias pager="$PAGER"
+alias readme="find . -maxdepth 1 -iname \"readme*\" -exec less {} \;"
 
 # "dos" aliases
 alias cls='clear'
@@ -91,13 +131,63 @@ fi
 
 # Get rid of .DS_Store files recursiveloy in current directory tree
 alias dsclean='find . -type f -name .DS_Store -delete && find . -type f -name ._.DS_Store -delete'
-#alias shuf='gshuf'
 alias dotclean='find . -name ._\* -delete'
 
-#cleanup caches
-alias fullclean='apt clean && apt autoclean && apt autoremove'
-alias fullupdate='apt update && apt dist-upgrade' 
+alias fullclean='sudo apt clean && sudo apt autoclean && sudo apt autoremove'
+alias fullupdate='sudo apt update && sudo apt dist-upgrade'
+alias gvim='nvim'
 
+alias ipy="jupyter lab ~/code/jupyter"
+
+#rename
+alias ren_jpg="rename 's/.JPG/.pndat/g' *.JPG && rename 's/.jpg/.pndat/g' *.jpg"
+alias ren_jpeg="rename 's/.JPEG/.pndat/g' *.JPEG && rename 's/.jpeg/.pndat/g' *.jpeg"
+alias ren_png="rename 's/.PNG/.pndat/g' *.PNG && rename 's/.png/.pndat/g' *.png"
+alias ren_pndat="rename 's/.PNDAT/.png/g' *.PNDAT && rename 's/.pndat/.png/g' *.pndat"
+alias ren_dat="rename 's/.dat/.jpg/g' *.dat && rename 's/.DAT/.jpg/g' *.DAT"
+
+alias goscripts='cd $HOME/scripts'
+
+# Enable syntax-highlighting in less/cat
+# Note: needs source-highlight and highlight brew packages for these to work
+#export LESSOPEN="| /usr/local/bin/src-hilite-lesspipe.sh %s"
+#export LESS=" -R "
+#alias less='less -m -N -g -i -J --underline-special --SILENT'
+alias lessc='less -R'
+alias more='less'
+#alias cat='less'
+
+# network related
+# Stop after sending count ECHO_REQUEST packets #
+alias ping='ping -c 5'
+# Do not wait interval 1 second, go fast #
+alias fastping='ping -c 100 -s.2'
+alias ports='netstat -tulanp'
+
+alias iperfdown='iperf3 -Rc 10.100.100.50'
+alias iperfup='iperf3 -c 10.100.100.50'
+
+alias pingrouter='ping 10.100.100.1'
+alias pingserver='ping 10.100.100.50'
+
+alias sshblanka='ssh -o MACs=hmac-sha2-256 root@10.100.100.65'
+alias sshha='ssh -o MACs=hmac-sha2-256 root@10.100.100.70'
+alias sshjf='ssh -o MACs=hmac-sha2-256 root@10.100.100.80'
+alias sshsagat='ssh -o MACs=hmac-sha2-256 root@10.100.100.75'
+alias sshrouter='ssh admin@10.100.100.1 -p 12372'
+alias sshserver='ssh -o MACs=hmac-sha2-256 root@10.100.100.50'
+alias sshpve='ssh -o MACs=hmac-sha2-256 root@10.100.100.50'
+alias sshvega='ssh -o MACs=hmac-sha2-256 root@10.100.100.60'
+alias sshventoy='ssh -o MACs=hmac-sha2-256 root@10.100.100.51'
+alias sshwg='ssh -o MACs=hmac-sha2-256 root@10.100.100.55'
+alias sshimm='ssh -o MACs=hmac-sha2-256 root@10.100.100.95'
+
+alias updateboot='update-grub && update-initramfs -u -k all'
+alias booterrors='journalctl  -b 0 -p 3'
+alias reservice='systemctl daemon-reload'
+
+###################################################################
+# PVE Server and LXC/VM specific
 # on PVE host
 alias gomedia='cd /mnt/sata-ssd/ssd-media/media'
 alias godata='cd /mnt/sata-ssd/ssd-data'
@@ -113,36 +203,7 @@ alias dockerupdate='docker compose down && docker compose pull && docker compose
 alias dockerbackup='sudo tar -zcvf ~/dockerapps.tar.gz /mnt/ssd-data/dockerapps'
 alias dockerclean='docker system prune --volumes'
 
-# Enable syntax-highlighting in less/cat
-# Note: needs source-highlight and highlight brew packages for these to work
-#export LESSOPEN="| /usr/local/bin/src-hilite-lesspipe.sh %s"
-#export LESS=" -R "
-#alias less='less -m -N -g -i -J --underline-special --SILENT'
-alias lessc='less -R'
-alias more='less'
-#alias cat='less'
-
-alias sshrouter='ssh admin@10.100.100.1'
-alias pingrouter='ping 10.100.100.1'
-alias pingserverwifi='ping 10.100.100.50'
-alias pingserver='ping 10.100.100.50'
-
-alias sshblanka='ssh -o MACs=hmac-sha2-256 root@10.100.100.65'
-alias sshha='ssh -o MACs=hmac-sha2-256 root@10.100.100.70'
-alias sshjf='ssh -o MACs=hmac-sha2-256 root@10.100.100.80'
-#alias sshkodi='ssh -o MACs=hmac-sha2-256 root@10.100.100.80'
-#alias sshnextcloud='ssh -o MACs=hmac-sha2-256 root@10.100.100.85'
-#alias sshplex='ssh -o MACs=hmac-sha2-256 root@10.100.100.75'
-alias sshsagat='ssh -o MACs=hmac-sha2-256 root@10.100.100.75'
-alias sshrouter='ssh admin@10.100.100.1'
-alias sshserver='ssh -o MACs=hmac-sha2-256 root@10.100.100.50'
-#alias sshserverwifi='ssh -o MACs=hmac-sha2-256 root@10.100.100.50'
-alias sshvega='ssh -o MACs=hmac-sha2-256 root@10.100.100.60'
-alias sshventoy='ssh -o MACs=hmac-sha2-256 root@10.100.100.51'
-alias sshwg='ssh -o MACs=hmac-sha2-256 root@10.100.100.55'
-
-alias updateboot='update-grub && update-initramfs -u -k all'
-alias booterrors='journalctl  -b 0 -p 3'
+###################################################################
 
 ######## functions ######################
 
@@ -165,7 +226,7 @@ movemovie()
     1)
         chmod 777 "$1"
         chown -R nobody:nogroup "$1"
-        mv "$1" /mnt/sata-ssd/ssd-media/media/video/MyMovies
+        mv "$1" /mnt/server/ssd-media/media/video/MyMovies
         ;;
     *)
         echo "USAGE : movemovie <movie_dir>"
@@ -175,9 +236,20 @@ movemovie()
 
 dockerupdateall()
 {
-    cd /mnt/ssd-data/dockerapps
-    cd `hostname`
+    cd /mnt/server/ssd-data/dockerapps
+    cd $(hostname) || exit
     find . -maxdepth 1 -type d \( ! -name . \) -not -path '*disabled*' -exec bash -c "cd '{}' && pwd && docker compose down && docker compose pull && docker compose up -d --remove-orphans" \;
     docker image prune -a -f
     docker system prune --volumes -f
 }
+
+cleanlocales()
+{
+    if (( ${+commands[open]} )); then 
+       echo "Can only run on Linux!"
+       exit
+    fi
+    find /usr/share/locale/* -maxdepth 0 -type d -not -iname "en*" -exec rm -r {}
+}
+
+
