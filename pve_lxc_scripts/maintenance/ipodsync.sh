@@ -56,11 +56,12 @@ echo "==========================================================================
 ######################################################################3
 # sync playlists and music with progress shown
 # don't forget the trailing '/' for $ipod_mountdir!
-# Can't use -a (which is collection of options) because owner and group are not supported on iPod and will throw errors
-rsync -rlptDvP --delete ${source_playlistsdir} ${ipod_mountdir}/
+# Can't use -a (archive) because owner and group are not supported on iPod/vfat/fat32 and will throw errors
+# Instead use "-hvrltD --modify-window=1" options specifically for exfat/fat32 fs
+rsync -hvrltD --modify-window=1 --delete ${source_playlistsdir} ${ipod_mountdir}/
 
 # sync music files
-rsync -rlptDvP --delete ${source_musicdir} ${ipod_mountdir}/
+rsync -hvrltD --modify-window=1 --delete ${source_musicdir} ${ipod_mountdir}/
 
 ######################################################################3
 # done
@@ -70,3 +71,5 @@ echo " All done. Manually unmount iPod after verifying with the command: "
 echo " umount ${ipod_device} "
 echo "==============================================================================="
 echo
+
+# end of script
