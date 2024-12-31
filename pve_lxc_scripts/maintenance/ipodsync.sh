@@ -48,10 +48,17 @@ ipod_playlistsdir="${ipod_mountdir}/Playlists"
 # manually mount instead of auto, too many corne cases for now
 # ipod7g has /dev/sdX1 as the partition while ipod5g has /dev/sdX2 as the partition
 echo
+echo "Contents of /mnt/ipod"
+ls /mnt/ipod
+echo
 echo "==============================================================================="
 echo "Ensure your iPod is mounted at /mnt/ipod before running this script"
-read -p "If not, precc Ctrl+C to exit, mount and rerun. Else Press Enter to continue" -n1 -s
+echo "If not, precc Ctrl+C to exit, mount and rerun. Else Press Enter to continue"
 echo "==============================================================================="
+echo
+
+# read into dummy variable to pause
+read answer
 
 ######################################################################3
 # sync playlists and music with progress shown
