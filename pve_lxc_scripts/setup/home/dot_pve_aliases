@@ -1,12 +1,15 @@
+# (c) Anirudh Acharya 2024
+# useful aliases
+
 ## ls aliases
 ## Colorize the ls output ##
 alias ls='ls --color=auto -FG'
 #export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
-## Use a long listing format ##
 alias ll='ls -la --color | less -R'
 ## Show hidden files ##
 alias ll.='ls -l -d -FG --color=auto .* | less'
 alias ls.='ls -d -FG --color=auto .*'
+
 alias l='ls -lFh'     #size,show type,human readable
 alias la='ls -lAFh'   #long list,show almost all,show type,human readable
 alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
@@ -18,12 +21,10 @@ alias lrt='ls -1Fcrt'
 alias lsr='ls -lARFh' #Recursive list of files and directories
 alias lsn='ls -1'     #A column contains name of files and directories
 
-alias zshrc='${=EDITOR} ${$HOME}/.zshrc' # Quick access to the .zshrc file
-alias bashrc='${=EDITOR} ${$HOME}/.bashrc' # Quick access to the .bashrc file
+#quick access to zshrc and bashrc files
+alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc'
+alias bashrc='${=EDITOR} ${$HOME}/.bashrc'
 
-## get rid of command not found ##
-alias cd..='cd ..'
- 
 ## a quick way to get out of current directory ##
 alias cd..='cd ..'
 alias ..='cd ..'
@@ -41,21 +42,25 @@ alias fgrep='fgrep --color=auto'
 alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
 alias hgrep="fc -El 0 | grep"
 alias greph='history | grep'
-alias h='history'
 
 #directory related aliases
 alias mkdir='mkdir -pv'
-alias md='mkdir'
+alias md='mkdir -pv'
 alias rd='rmdir'
+
+# "dos" aliases
+alias cls='clear'
+alias dir='ls'
+
+#stow aliases
+alias unstow='cd $HOME/dotfiles/home && stow --verbose=2 --target=$HOME --delete . && cd -'
+alias restow='cd $HOME/dotfiles/home && stow --verbose=1 --target=$HOME --stow --adopt . && cd -'
 
 alias path='echo -e ${PATH//:/\\n}'
 alias now='date +"%T"'
 alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'
 alias a='alias'
-
-#git
-alias gitpush="git pull && git add * && git commit -a && git push"
 
 #console
 alias please='sudo $( history -p !! )'
@@ -64,12 +69,18 @@ alias listps='ps aux | grep -v "ps aux" | grep -Ev "\[.+\]" | grep -v grep'
 alias diskuse="echo 'Device          Size  Used  Free  Mount Point' && df -h --output=source,size,used,avail,target | grep dev/root | sort"
 alias free='free -h'
 
-alias dud='du -d 1 -h'
-# below won't work
-#(( $+commands[duf] )) || alias duf='du -sh *'
-#(( $+commands[fd] )) || alias fd='find . -type d -name'
-alias ff='find . -type f -name'
+# find aliases
+alias fdir='find . -type d -name'
+alias ffile='find . -type f -name'
 
+## disk space clean output ##
+alias dud='du -d 1 -h'
+alias df='df -P -h'
+alias du='du -ch'
+alias duf='duf -hide special'
+alias dirsize='du -sh'
+
+# sort, unset etc.
 alias help='man'
 alias sortnr='sort -n -r'
 alias unexport='unset'
@@ -83,35 +94,27 @@ alias mv='mv -i'
 alias psmem='ps aux | sort -nr -k 4'
 alias psmem10='ps aux | sort -nr -k 4 | head -10'
 
-# become root #
-alias root='sudo -i'
-alias su='sudo -i'
- 
 ## get top process eating cpu ##
 alias pscpu='ps aux | sort -nr -k 3'
 alias pscpu10='ps aux | sort -nr -k 3 | head -10'
 
-## this one saved by butt so many times ##
-alias wget='wget -c'
-
-## disk space clean output ##
-alias df='df -P -h'
-alias du='du -ch'
-
+# become root #
+alias root='sudo -i'
+alias su='sudo -i'
+ 
 # editor aliases
-alias vi='vim'
-alias gvim='vim'
-alias vis='vim "+set si"'
-alias sudovi='sudo vim'
+#alias vim='nano'
+#alias vi='nano'
+#alias vi='vim'
+#alias gvim='vim'
+#alias sudovi='sudo vi'
+alias vi='nvim'
+alias vim='nvim'
+alias vis='nvim "+set si"'
+alias sudovi='sudo nvim'
 alias edit="vim"
 alias pager="$PAGER"
 alias readme="find . -maxdepth 1 -iname \"readme*\" -exec less {} \;"
-
-# "dos" aliases
-alias cls='clear'
-alias dir='ls'
-alias md='mkdir'
-alias rd='rmdir'
 
 # Tree
 if [ ! -x "$(which tree 2>/dev/null)" ]
@@ -123,20 +126,78 @@ fi
 alias dsclean='find . -type f -name .DS_Store -delete && find . -type f -name ._.DS_Store -delete'
 alias dotclean='find . -name ._\* -delete'
 
-alias fullclean='sudo apt clean && sudo apt autoclean && sudo apt autoremove'
-alias fullupdate='sudo apt update && sudo apt dist-upgrade'
-alias gvim='nvim'
+#cleanup caches,fedora and debian
+if (( ${+commands[apt-get]} )); then 
+    # add condition for debian/derivatives specific command here
+    alias fullclean='sudo apt clean && sudo apt autoclean && sudo apt autoremove'
+    alias fullupdate='sudo apt update && sudo apt dist-upgrade'
+    alias gvim='nvim'
+    alias fm='nautilus . &'
+elif (( ${+commands[dnf]} )); then 
+    # add condition for fedora specific command here
+    alias fullclean='sudo dnf clean all && sudo dnf autoremove'
+    alias fullupdate='sudo dnf update --refresh && sudo dnf upgrade -y && sudo flatpak upgrade -y'
+    alias distupgrade='sudo dnf update --refresh && sudo dnf distro-sync'
+    alias fwupdate='sudo fwupdmgr refresh --force && sudo fwupdmgr get-updates && sudo fwupdmgr update'
+    alias checkfw='sudo fwupdmgr get-devices'
+    alias gvim='nvim'
+    alias fm='nautilus . &'
+    alias showkernel='sudo rpm -q kernel-core && uname -a'
+elif (( ${+commands[open]} )); then 
+    # add condition for macos specific commmand here
+    alias brew_update='brew update --greedy && brew upgrade && brew cleanup && brew doctor && brew update && brew cleanup'
+    alias fullupdate='brew update --greedy && brew upgrade && brew cleanup && brew doctor && brew update && brew cleanup'
+    alias fix_wireshark='cd /dev && sudo chown aacharya:admin bp*; cd -'
+    alias flushdns='dscacheutil -flushcache'
+    alias lscleanup='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder'
+    alias cdf='open .'P='2>&1| pygmentize -l pytb'
+    alias shuf='gshuf'
+    alias gvim='vimr'
+    #finder aliases
+    alias finder='open'
+    #cleanup caches
+    alias cleanup='sudo update_dyld_shared_cache -force'
+    #finder hidden files
+    alias showhidden='defaults write com.apple.finder AppleShowAllFiles YES && killall Finder /System/Library/CoreServices/Finder.app'
+    alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO && killall Finder /System/Library/CoreServices/Finder.app'
+    alias gooc='cd ~/Downloads/OpenCore'
+    # Desktop Programs
+    alias preview="open -a '$PREVIEW'"
+    alias xcode="open -a '/Applications/XCode.app'"
+    alias filemerge="open -a '/Developer/Applications/Utilities/FileMerge.app'"
+    alias safari="open -a safari"
+    alias firefox="open -a firefox"
+    alias chrome="open -a google\ chrome"
+    alias textedit='open -a TextEdit'
+    #finder aliases
+    alias finder='open'
+    #monitor cpu clock
+    alias cpufreq="sudo powermetrics | grep \"CPU Average frequency as fraction of nominal\""
+fi
 
-alias ipy="jupyter lab ~/code/jupyter"
+# jupyterlab aliases
+alias ipy="jupyter lab ~/code/github/jupyternb"
 
-#rename
-alias ren_jpg="rename 's/.JPG/.pndat/g' *.JPG && rename 's/.jpg/.pndat/g' *.jpg"
-alias ren_jpeg="rename 's/.JPEG/.pndat/g' *.JPEG && rename 's/.jpeg/.pndat/g' *.jpeg"
-alias ren_png="rename 's/.PNG/.pndat/g' *.PNG && rename 's/.png/.pndat/g' *.png"
-alias ren_pndat="rename 's/.PNDAT/.png/g' *.PNDAT && rename 's/.pndat/.png/g' *.pndat"
-alias ren_dat="rename 's/.dat/.jpg/g' *.dat && rename 's/.DAT/.jpg/g' *.DAT"
+#git
+alias gitpush="git pull && git add * && git commit -a && git push"
 
-alias goscripts='cd $HOME/scripts'
+# other goto aliases
+alias sysinfo='sudo inxi -Fzx'
+alias godot='cd $HOME/dotfiles'
+alias gocode='cd $HOME/code'
+alias gogit='cd $HOME/code/github'
+
+# docker files on server mount
+alias gomedia='cd /mnt/server/ssd-media/media'
+alias godata='cd /mnt/server/ssd-data'
+alias godocker='cd /mnt/server/ssd-data/dockerapps'
+alias dockerup='docker compose up -d'
+alias dockerdown='docker compose down'
+alias dockerrestart='docker compose down && docker compose up -d'
+alias dockerupdate='docker compose down && docker compose pull && docker compose up -d --remove-orphans && docker image prune -f && docker system prune --volumes'
+alias dockerbackup='sudo tar -zcvf ~/dockerapps.tar.gz /mnt/server/ssd-data/dockerapps'
+alias dockerclean='docker system prune --volumes'
+#alias dockerbackup='sudo tar -zcvf ~/dockerapps.tar.gz /opt/dockerapps'
 
 # Enable syntax-highlighting in less/cat
 # Note: needs source-highlight and highlight brew packages for these to work
@@ -154,47 +215,47 @@ alias ping='ping -c 5'
 alias fastping='ping -c 100 -s.2'
 alias ports='netstat -tulanp'
 
+## this one saved by butt so many times ##
+alias wget='wget -c'
+
+# iperf3, uses daemon on pve persever
 alias iperfdown='iperf3 -Rc 10.100.100.50'
 alias iperfup='iperf3 -c 10.100.100.50'
 
+# ping aliases
 alias pingrouter='ping 10.100.100.1'
 alias pingserver='ping 10.100.100.50'
 
+#ssh to LXC/VMs
 alias sshblanka='ssh -o MACs=hmac-sha2-256 root@10.100.100.65'
 alias sshha='ssh -o MACs=hmac-sha2-256 root@10.100.100.70'
 alias sshjf='ssh -o MACs=hmac-sha2-256 root@10.100.100.80'
 alias sshsagat='ssh -o MACs=hmac-sha2-256 root@10.100.100.75'
-alias sshrouter='ssh admin@10.100.100.1 -p 12372'
-alias sshserver='ssh -o MACs=hmac-sha2-256 root@10.100.100.50'
-alias sshpve='ssh -o MACs=hmac-sha2-256 root@10.100.100.50'
 alias sshvega='ssh -o MACs=hmac-sha2-256 root@10.100.100.60'
 alias sshventoy='ssh -o MACs=hmac-sha2-256 root@10.100.100.51'
 alias sshwg='ssh -o MACs=hmac-sha2-256 root@10.100.100.55'
 alias sshimm='ssh -o MACs=hmac-sha2-256 root@10.100.100.95'
+# alias sshpaperless=''
+# alias sshnc=''
+# alias sshkodi=''
+# alias sshfrigate=''
 
-alias updateboot='update-grub && update-initramfs -u -k all'
-alias booterrors='journalctl  -b 0 -p 3'
-alias reservice='systemctl daemon-reload'
+# by default always open a tmux session for PVE server, use sshserver for non-tmux version
+alias sshpve='ssh -o MACs=hmac-sha2-256 root@10.100.100.50 -t "tmux attach || tmux new"'
+alias sshserver='ssh -o MACs=hmac-sha2-256 root@10.100.100.50'
+alias sshrouter='ssh admin@10.100.100.1 -p 12372'
 
-###################################################################
-# PVE Server and LXC/VM specific
-# on PVE host
-alias gomedia='cd /mnt/sata-ssd/ssd-media/media'
-alias godata='cd /mnt/sata-ssd/ssd-data'
-alias gopvedocker='cd /mnt/sata-ssd/ssd-data/dockerapps'
-#alias dockerbackup='sudo tar -zcvf ~/dockerapps.tar.gz /opt/dockerapps'
-
-# on LXC
-alias godocker='cd /mnt/ssd-data/dockerapps && cd `hostname`'
-alias dockerup='docker compose up -d'
-alias dockerdown='docker compose down'
-alias dockerrestart='docker compose down && docker compose up -d'
-alias dockerupdate='docker compose down && docker compose pull && docker compose up -d --remove-orphans && docker image prune -f && docker system prune --volumes'
-alias dockerbackup='sudo tar -zcvf ~/dockerapps.tar.gz /mnt/ssd-data/dockerapps'
-alias dockerclean='docker system prune --volumes'
-
-###################################################################
-
+# macos and linux services
+if (( ${+commands[open]} )); then
+    # macos services here
+else 
+    # linux services
+    alias booterrors='sudo journalctl  -b 0 -p 3'
+    alias updateboot='sudo update-grub && sudo update-initramfs -u -k all'
+    alias reservice='sudo systemctl daemon-reload'
+    #use "refresh" followed by any command you want to constantly refresh on screen, Ctrl+C to quit
+    alias refresh='watch --interval=3'
+fi
 ######## functions ######################
 
 mkcd()
@@ -239,7 +300,6 @@ cleanlocales()
        echo "Can only run on Linux!"
        exit
     fi
-    find /usr/share/locale/* -maxdepth 0 -type d -not -iname "en*" -exec rm -r {}
+    sudo find /usr/share/locale/* -maxdepth 0 -type d -not -iname "en*" -exec rm -r {} \;
 }
-
 
