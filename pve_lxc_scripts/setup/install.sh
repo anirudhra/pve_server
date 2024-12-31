@@ -58,7 +58,9 @@ echo
 echo Configuring shell aliases for current user...
 echo
 # add useful aliases to profile, works for bash and zsh
-wget -O ~/.aliases https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/pve_lxc_scripts/setup/home/dot_pve_aliases
+#wget -O ~/.aliases https://raw.githubusercontent.com/anirudhra/hpe800g4dm_server/main/pve_lxc_scripts/setup/home/dot_pve_aliases
+# use the unified dot files from dotfiles repo, works for all platforms now
+wget -O ~/.aliases https://raw.githubusercontent.com/anirudhra/dotfiles/refs/heads/main/home/.aliases
 # source aliases in .profile after creating backup
 cp ~/.profile ~/.profile.bak
 echo "source ~/.aliases" >>~/.profile
