@@ -1,9 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 # (c) Anirudh Acharya 2024
 # Sets up PVE host and/or LXC container for basic usage
 # This script must be run as root on PVE Server and LXC/VMs
-# More updates planned to make it parameterizable
-#
+# Not running as bash or zsh will cause this script to fail as "sh" does not support arrays!
 
 mode="none"
 
@@ -29,15 +28,15 @@ if [ "$(id -u)" -ne 0 ]; then echo "Script must be run as root!" >&2; exit 1; fi
 # Configure console font and size, esp. usefull for hidpi displays (select Combined Latin, Terminus, 16x32 for legibility
 echo
 # echo Configuring Console...
-#FIXME dpkg-reconfigure console-setup
+dpkg-reconfigure console-setup
 # Configure timezone and locale for en/UTF-8
 echo
 echo Configuring Timezone...
-#FIXME dpkg-reconfigure tzdata
+dpkg-reconfigure tzdata
 echo
 echo Configuring Locales...
 echo
-#FIXME dpkg-reconfigure locales
+dpkg-reconfigure locales
 echo
 
 # Perform OS update and upgrade
@@ -95,7 +94,7 @@ $installer install "${common_packages[@]}"
 
 #server side ops and packages
 if [ $mode = "pve" ]; then
-   echo "Server"
+   echo "Server specific packages..."
    $installer install "${pve_packages[@]}"
 
    # NFS shares and mounts, export on PVE server
@@ -103,7 +102,6 @@ if [ $mode = "pve" ]; then
      echo NFS share mounts as IPaddr:/mnt/sata-ssd already exist!
      echo
    else
-     exit #FIXME
      echo Exporting NFS share mounts as IPaddr:/mnt/sata-ssd
      echo
      echo "#share sata-ssd over nfs" >> /etc/exports
@@ -111,7 +109,7 @@ if [ $mode = "pve" ]; then
    fi
 #guest side ops and packages
 else
-   echo "Guest"
+   echo "Guest specific packages..."
    $installer install "${guest_packages[@]}"
    
    # disabled by default unless audio is passed through in VM/LXC
@@ -158,14 +156,14 @@ echo Configuring shell aliases...
 echo
 
 # add useful aliases to profile, works for bash and zsh
-# use the unified dot files from dotfiles repo, works for all platforms now
-wget -O ~/.aliases https://raw.githubusercontent.com/anirudhra/dotfiles/refs/heads/main/home/.aliases
-# source aliases in .profile after creating backup
-cp ~/.profile ~/.profile.bak
 if grep -wq "source ~/.aliases" ~/.profile; then 
   echo "Aliases file already sourced"
 else
+  # source aliases in .profile after creating backup
+  cp ~/.profile ~/.profile.bak
   echo "source ~/.aliases" >>~/.profile
+  # use the unified dot files from dotfiles repo, works for all platforms now
+  wget -O ~/.aliases https://raw.githubusercontent.com/anirudhra/dotfiles/refs/heads/main/home/.aliases
 fi
 
 echo
