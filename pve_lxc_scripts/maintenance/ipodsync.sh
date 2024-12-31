@@ -15,9 +15,10 @@ source_playlistsdir="${server_basesourcedir}/playlists"
 ipod5g_mountdir="/mnt/IPOD5G"
 ipod7g_mountdir="/mnt/IPOD7G"
 ipod_mountdir="/mnt/ipod"
-ipod_device="/dev/sdb1"
+ipod5g_device="/dev/sdb2" #FIXME: /dev/sdX2
+ipod7g_device="/dev/sdb1" #FIXME: /dev/sdX1
 ipod_musicdir="${ipod_mountdir}/music"
-ipod_playlistsdir="${ipod_mountdir}/Playlists"
+ipod_playlistsdir="${ipod_mountdir}/playlists"
 
 ######################################################################3
 # Check if iPod is attached
@@ -48,11 +49,22 @@ ipod_playlistsdir="${ipod_mountdir}/Playlists"
 # manually mount instead of auto, too many corne cases for now
 # ipod7g has /dev/sdX1 as the partition while ipod5g has /dev/sdX2 as the partition
 echo
-echo "Contents of /mnt/ipod"
-ls /mnt/ipod
+echo "==============================================================================="
+echo "Contents of ${ipod_mountdir}:"
+echo
+ls ${ipod_mountdir}
 echo
 echo "==============================================================================="
-echo "Ensure your iPod is mounted at /mnt/ipod before running this script"
+echo "Disk space usage of ${ipod_mountdir}"
+df -h ${ipod_mountdir}
+echo "==============================================================================="
+echo
+echo "==============================================================================="
+echo "Ensure your iPod is mounted at ${ipod_mountdir} before running this script"
+echo
+echo "For iPod5G: mount /dev/sdX2 ${ipod_mountdir}"
+echo "For iPod7G: mount /dev/sdX1 ${ipod_mountdir}"
+echo
 echo "If not, precc Ctrl+C to exit, mount and rerun. Else Press Enter to continue"
 echo "==============================================================================="
 echo
@@ -65,8 +77,13 @@ read answer
 # don't forget the trailing '/' for $ipod_mountdir!
 # Can't use -a (archive) because owner and group are not supported on iPod/vfat/fat32 and will throw errors
 # Instead use "-hvrltD --modify-window=1" options specifically for exfat/fat32 fs
+echo "Syncing playlists..."
+echo
 rsync -hvrltD --modify-window=1 --delete ${source_playlistsdir} ${ipod_mountdir}/
 
+echo
+echo "Syncing music..."
+echo
 # sync music files
 rsync -hvrltD --modify-window=1 --delete ${source_musicdir} ${ipod_mountdir}/
 
@@ -75,7 +92,7 @@ rsync -hvrltD --modify-window=1 --delete ${source_musicdir} ${ipod_mountdir}/
 echo
 echo "==============================================================================="
 echo " All done. Manually unmount iPod after verifying with the command: "
-echo " umount ${ipod_device} "
+echo " umount ${ipod_mountdir}"
 echo "==============================================================================="
 echo
 
