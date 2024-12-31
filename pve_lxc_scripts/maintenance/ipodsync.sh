@@ -65,7 +65,7 @@ echo
 echo "For iPod5G: mount /dev/sdX2 ${ipod_mountdir}"
 echo "For iPod7G: mount /dev/sdX1 ${ipod_mountdir}"
 echo
-echo "If not, precc Ctrl+C to exit, mount and rerun. Else Press Enter to continue"
+echo "If not, press Ctrl+C to exit, mount and rerun. Else Press Enter to continue"
 echo "==============================================================================="
 echo
 

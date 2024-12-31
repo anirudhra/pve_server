@@ -2,6 +2,9 @@
 # (c) Anirudh Acharya 2024
 # unmounts hdpool filesystem - first step (does not remove the pool)
 #
-zfs umount /pvebackup
-# exports the zpool to make it safe to USB disconnect after unmount 
-zpool export pvebackup
+
+zfspool="pvebackup"
+
+zfs umount /${zfspool}
+# exports the zpool to make it safe to USB disconnect after unmount
+zpool export ${zfspool}
