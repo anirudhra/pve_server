@@ -5,8 +5,8 @@
 #
 # uncomment -f version if pool fails to mount, else use non-f version
 # zpool import hdpool -f
-zpool import hdpool
+zpool import pvebackup
 
 # following command may not be needed all the time, but just in case
-zfs set mountpoint=/hdpool hdpool
+zfs set mountpoint=/zfsdata pvebackup/zfsdata
 
