@@ -10,4 +10,4 @@ ssd-data/dockerapps/blanka/jdownloader2-disabled/config
 ssd-data/dockerapps/blanka/jdownloader2/config
 ssd-data/downloads/soulseek/incomplete
 ssd-data/downloads/torrents/incomplete
-/template
+template/iso
