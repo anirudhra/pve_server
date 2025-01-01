@@ -40,10 +40,10 @@ echo
 echo "==============================================================================="
 echo "Disk space usage of destination: ${backup_dest}"
 df -h ${backup_dest}
-echo "==============================================================================="
 echo
-echo "If not, press Ctrl+C to exit, mount and rerun. Else Press Enter to continue"
-echo "==============================================================================="
+echo "==========================================================================================="
+echo "If this is not correct, press Ctrl+C to exit, mount and rerun. Else Press Enter to continue"
+echo "==========================================================================================="
 
 # read into dummy variable to pause
 read answer
