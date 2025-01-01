@@ -50,6 +50,12 @@ ipod_playlistsdir="${ipod_mountdir}/playlists"
 # ipod7g has /dev/sdX1 as the partition while ipod5g has /dev/sdX2 as the partition
 echo
 echo "==============================================================================="
+echo "Ensure your iPod is mounted at ${ipod_mountdir} before running this script"
+echo
+echo "For iPod5G: mount /dev/sdX2 ${ipod_mountdir}"
+echo "For iPod7G: mount /dev/sdX1 ${ipod_mountdir}"
+echo "==============================================================================="
+echo
 echo "Contents of ${ipod_mountdir}:"
 echo
 ls ${ipod_mountdir}
@@ -59,15 +65,8 @@ echo "Disk space usage of ${ipod_mountdir}"
 df -h ${ipod_mountdir}
 echo "==============================================================================="
 echo
-echo "==============================================================================="
-echo "Ensure your iPod is mounted at ${ipod_mountdir} before running this script"
-echo
-echo "For iPod5G: mount /dev/sdX2 ${ipod_mountdir}"
-echo "For iPod7G: mount /dev/sdX1 ${ipod_mountdir}"
-echo
 echo "If not, press Ctrl+C to exit, mount and rerun. Else Press Enter to continue"
 echo "==============================================================================="
-echo
 
 # read into dummy variable to pause
 read answer
