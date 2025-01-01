@@ -15,28 +15,47 @@
 
 zfspool="pvebackup"
 mountpoint="zfsdata"
+#backup_dest="/${pvebackup}/${mountpoint}"
+# zfs fs mountpoint does not include zpool anymore
+backup_dest="/${mountpoint}"
+backup_dest_dir="${backup_dest}/pve_backup"
+backup_source_dir="/mnt/sata-ssd"
+backup_exclude_list="./exclude_pve_zfs_backup.txt"
 
 #confirm backup destination is available and correct
 echo
 echo "==============================================================================="
-echo "Contents of destination: ${zfspool}/${mountpoint}:"
-echo
-ls ${zfspool}/${mountpoint}
-echo
-echo "==============================================================================="
-echo "Disk space usage of destination: ${zfspool}/${mountpoint}"
-df -h ${zfspool}/${mountpoint}
-echo "==============================================================================="
-echo
-echo "==============================================================================="
 echo "Ensure your backup destination is mounted correctly before running this script"
-echo "Backup desitnation: ${zfspool}/${mountpoint}"
+echo
+echo "Backup desitnation: ${backup_dest}"
+echo "Backup destination directory: ${backup_dest_dir}"
+echo "Backup source diretory: ${backup_source_dir}" 
+echo "Backup exclude list: ${backup_exclude_list}"
+echo "==============================================================================="
+echo
+echo "Contents of backup destination - ${backup_dest}:"
+echo
+ls ${backup_dest}
+echo
+echo "==============================================================================="
+echo "Disk space usage of destination: ${backup_dest}"
+df -h ${backup_dest}
+echo "==============================================================================="
 echo
 echo "If not, press Ctrl+C to exit, mount and rerun. Else Press Enter to continue"
 echo "==============================================================================="
-echo
 
 # read into dummy variable to pause
 read answer
+echo
+echo "Starting backup..."
+echo
 
-rsync -avHPAX --delete --exclude-from='./exclude_pve_zfs_backup.txt' /mnt/sata-ssd /zfsdata/pve_backup
+mkdir -p ${backup_dest_dir}
+# -avHPAX should handle linux/macos/exfat volumes ok
+rsync -avHPAX --delete --exclude-from=${backup_exclude_list} ${backup_source_dir} ${backup_dest_dir}
+
+echo "Backup complete: ${today}"
+echo "Backed up on ${today}" > "${dest_path}/log.txt"
+echo
+
