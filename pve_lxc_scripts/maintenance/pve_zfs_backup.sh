@@ -52,7 +52,7 @@ echo "Starting backup..."
 echo
 
 mkdir -p ${backup_dest_dir}
-# -avHPAX should handle linux/macos/exfat volumes ok
+# -avHPAX should handle linux/macos volumes fine, not intended for fat32/vfat destinations
 rsync -avHPAX --delete --exclude-from=${backup_exclude_list} ${backup_source_dir} ${backup_dest_dir}
 
 echo "Backup complete: ${today}"

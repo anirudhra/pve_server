@@ -12,3 +12,8 @@ ssd-data/downloads/soulseek/incomplete
 ssd-data/downloads/torrents/incomplete
 template/iso
 template/cache
+*cache*
+*.swp*
+*tmp*
+*.log*
+*backup*
