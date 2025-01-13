@@ -8,22 +8,25 @@ mode="none"
 
 # validate inputs
 if [ $# -ne 1 ]; then
-    echo "Usage: $0 pve or $0 guest"
-    exit 1
+  echo "Usage: $0 pve or $0 guest"
+  exit 1
 else
-   if [ "$1" = "pve" ]; then
-     echo "Script invoked in PVE server mode"
-   elif [ "$1" = "guest" ]; then
-     echo "Script invoked in Guest mode"
-   else	
+  if [ "$1" = "pve" ]; then
+    echo "Script invoked in PVE server mode"
+  elif [ "$1" = "guest" ]; then
+    echo "Script invoked in Guest mode"
+  else
     echo "Usage: $0 pve or $0 guest"
     exit 1
-   fi
-   mode=$1
+  fi
+  mode=$1
 fi
 
 # must be root
-if [ "$(id -u)" -ne 0 ]; then echo "Script must be run as root!" >&2; exit 1; fi
+if [ "$(id -u)" -ne 0 ]; then
+  echo "Script must be run as root!" >&2
+  exit 1
+fi
 
 # Configure console font and size, esp. usefull for hidpi displays (select Combined Latin, Terminus, 16x32 for legibility
 echo
@@ -49,39 +52,39 @@ echo
 echo Installing packages in \"$mode\" mode...
 echo
 
-common_packages=( 
-   'neovim'
-   'btop'
-   'avahi-daemon'
-   'avahi-utils'
-   'duf'
-   'nfs-common'
-   'tmux'
-   'screen'
-   'reptyr'
-   'ncdu'
-   'autofs'
+common_packages=(
+  'neovim'
+  'btop'
+  'avahi-daemon'
+  'avahi-utils'
+  'duf'
+  'nfs-common'
+  'tmux'
+  'screen'
+  'reptyr'
+  'ncdu'
+  'autofs'
 )
 
 pve_packages=(
-   'inxi'
-   'git'
-   'gh'
-   'alsa-utils'
-   'cpufrequtils'
-   'nfs-kernel-server'
-   'lm-sensors'
-   'powertop'
-   'usbutils'
-   'pciutils'
-   'iperf3'
-   'intel-media-va-driver-non-free'
-   'vainfo'
-   'intel-gpu-tools'
+  'inxi'
+  'git'
+  'gh'
+  'alsa-utils'
+  'cpufrequtils'
+  'nfs-kernel-server'
+  'lm-sensors'
+  'powertop'
+  'usbutils'
+  'pciutils'
+  'iperf3'
+  'intel-media-va-driver-non-free'
+  'vainfo'
+  'intel-gpu-tools'
 )
 
 guest_packages=(
-   'htop'
+  'cifs-utils'
 )
 
 # for issues with Intel iGPU, read through https://wiki.archlinux.org/title/Intel_graphics for potential issues/solutions
@@ -94,50 +97,50 @@ $installer install "${common_packages[@]}"
 
 #server side ops and packages
 if [ $mode = "pve" ]; then
-   echo "Server specific packages..."
-   $installer install "${pve_packages[@]}"
+  echo "Server specific packages..."
+  $installer install "${pve_packages[@]}"
 
-   # NFS shares and mounts, export on PVE server
-   if grep -wq "/mnt/sata-ssd 10.100.100.0/24" /etc/exports; then
-     echo NFS share mounts as IPaddr:/mnt/sata-ssd already exist!
-     echo
-   else
-     echo Exporting NFS share mounts as IPaddr:/mnt/sata-ssd
-     echo
-     echo "#share sata-ssd over nfs" >> /etc/exports
-     echo "/mnt/sata-ssd 10.100.100.0/24(rw,sync,no_subtree_check,no_root_squash,no_all_squash)" >> /etc/exports
-   fi
+  # NFS shares and mounts, export on PVE server
+  if grep -wq "/mnt/sata-ssd 10.100.100.0/24" /etc/exports; then
+    echo NFS share mounts as IPaddr:/mnt/sata-ssd already exist!
+    echo
+  else
+    echo Exporting NFS share mounts as IPaddr:/mnt/sata-ssd
+    echo
+    echo "#share sata-ssd over nfs" >>/etc/exports
+    echo "/mnt/sata-ssd 10.100.100.0/24(rw,sync,no_subtree_check,no_root_squash,no_all_squash)" >>/etc/exports
+  fi
 #guest side ops and packages
 else
-   echo "Guest specific packages..."
-   $installer install "${guest_packages[@]}"
-   
-   # disabled by default unless audio is passed through in VM/LXC
-   #$installer install alsa-utils
-   
-   # disabled by default unless GPU is passed through in VM/LXC
-   #$installer install intel-media-va-driver-non-free vainfo intel-gpu-tools
-   
-   # on kodi hosts, install the following
-   #sudo apt install kodi-inputstream-adaptive
+  echo "Guest specific packages..."
+  $installer install "${guest_packages[@]}"
 
-   # NFS shares and mounts, LXC clients need to be privileged, else this will fail!
-   if grep -wq "/mnt/server -fstype=nfs" /etc/auto.mount; then
-     echo "NFS share mount /mnt/server already exists in /etc/auto.mount! Check /etc/auto.master if it does not work!"
-     echo
-   else
-     echo Automounting NFS share mounts in /mnt/server
-     echo
-     cp /etc/auto.master /etc/auto.master.bak
-     cp /etc/auto.mount /etc/auto.mount.bak
-     mkdir -p /mnt/server
-     chmod 777 /mnt/server
-   
-     echo "# manually added for server" >>/etc/auto.master
-     echo "/- /etc/auto.mount" >>/etc/auto.master
-     echo "# nfs server mount" >>/etc/auto.mount
-     echo "/mnt/server -fstype=nfs,rw 10.100.100.50:/mnt/sata-ssd" >>/etc/auto.mount
-   fi
+  # disabled by default unless audio is passed through in VM/LXC
+  #$installer install alsa-utils
+
+  # disabled by default unless GPU is passed through in VM/LXC
+  #$installer install intel-media-va-driver-non-free vainfo intel-gpu-tools
+
+  # on kodi hosts, install the following
+  #sudo apt install kodi-inputstream-adaptive
+
+  # NFS shares and mounts, LXC clients need to be privileged, else this will fail!
+  if grep -wq "/mnt/server -fstype=nfs" /etc/auto.mount; then
+    echo "NFS share mount /mnt/server already exists in /etc/auto.mount! Check /etc/auto.master if it does not work!"
+    echo
+  else
+    echo Automounting NFS share mounts in /mnt/server
+    echo
+    cp /etc/auto.master /etc/auto.master.bak
+    cp /etc/auto.mount /etc/auto.mount.bak
+    mkdir -p /mnt/server
+    chmod 777 /mnt/server
+
+    echo "# manually added for server" >>/etc/auto.master
+    echo "/- /etc/auto.mount" >>/etc/auto.master
+    echo "# nfs server mount" >>/etc/auto.mount
+    echo "/mnt/server -fstype=nfs,rw 10.100.100.50:/mnt/sata-ssd" >>/etc/auto.mount
+  fi
 fi
 
 #restart autofs
@@ -156,7 +159,7 @@ echo Configuring shell aliases...
 echo
 
 # add useful aliases to profile, works for bash and zsh
-if grep -wq "source ~/.aliases" ~/.profile; then 
+if grep -wq "source ~/.aliases" ~/.profile; then
   echo "Aliases file already sourced"
 else
   # source aliases in .profile after creating backup
@@ -171,4 +174,3 @@ echo "Done! Logout and log back in for changes"
 echo
 
 # end of script
-
