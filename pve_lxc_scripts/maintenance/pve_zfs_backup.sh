@@ -13,7 +13,7 @@
 # verbose version of above
 #
 
-zfspool="pvebackup"
+#zfspool="pvebackup"
 mountpoint="zfsdata"
 #backup_dest="/${pvebackup}/${mountpoint}"
 # zfs fs mountpoint does not include zpool anymore
@@ -29,7 +29,7 @@ echo "Ensure your backup destination is mounted correctly before running this sc
 echo
 echo "Backup desitnation: ${backup_dest}"
 echo "Backup destination directory: ${backup_dest_dir}"
-echo "Backup source diretory: ${backup_source_dir}" 
+echo "Backup source diretory: ${backup_source_dir}"
 echo "Backup exclude list: ${backup_exclude_list}"
 echo "==============================================================================="
 echo
@@ -55,7 +55,8 @@ mkdir -p ${backup_dest_dir}
 # -avHPAX should handle linux/macos volumes fine, not intended for fat32/vfat destinations
 rsync -avHPAX --delete --exclude-from=${backup_exclude_list} ${backup_source_dir} ${backup_dest_dir}
 
-echo "Backup complete: ${today}"
-echo "Backed up on ${today}" > "${dest_path}/log.txt"
-echo
+today=$(date '+%Y-%m-%d')
 
+echo "Backup complete: ${today}"
+echo "Backed up on ${today}" >"${backup_dest}/log.txt"
+echo

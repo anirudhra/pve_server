@@ -49,7 +49,7 @@ apt update
 apt upgrade
 
 echo
-echo Installing packages in \"$mode\" mode...
+echo "Installing packages in \"${mode}\" mode..."
 echo
 
 common_packages=(
@@ -85,6 +85,13 @@ pve_packages=(
 
 guest_packages=(
   'cifs-utils'
+  ## all below disabled by default
+  #'alsa-utils'
+  #'intel-media-va-driver-non-free'
+  #'vainfo'
+  #'intel-gpu-tools'
+  ## for kodi hosts only
+  #'kodi-inputstream-adaptive'
 )
 
 # for issues with Intel iGPU, read through https://wiki.archlinux.org/title/Intel_graphics for potential issues/solutions
@@ -96,50 +103,53 @@ installer="apt"
 $installer install "${common_packages[@]}"
 
 #server side ops and packages
-if [ $mode = "pve" ]; then
+#nfs mount/export
+server_nfs="/mnt/sata-ssd"
+server_subnet="10.100.100.0/24"
+server_ip="10.100.100.50"
+client_nfs="/mnt/nfs"
+
+#files
+serve_nfs_exports="/etc/exports"
+client_auto_master="/etc/auto.master"
+client_auto_pveshare="/etc/auto.pveshare"
+
+if [ "${mode}" = "pve" ]; then
   echo "Server specific packages..."
-  $installer install "${pve_packages[@]}"
+  ${installer} install "${pve_packages[@]}"
 
   # NFS shares and mounts, export on PVE server
-  if grep -wq "/mnt/sata-ssd 10.100.100.0/24" /etc/exports; then
-    echo NFS share mounts as IPaddr:/mnt/sata-ssd already exist!
+  if grep -wq "${server_nfs} ${server_subnet}" ${serve_nfs_exports}; then
+    echo NFS share mount ${server_subnet}:${server_nfs} already exists in ${serve_nfs_exports}!
     echo
   else
-    echo Exporting NFS share mounts as IPaddr:/mnt/sata-ssd
+    echo Exporting NFS share mounts as ${server_subnet}:${server_nfs}
     echo
-    echo "#share sata-ssd over nfs" >>/etc/exports
-    echo "/mnt/sata-ssd 10.100.100.0/24(rw,sync,no_subtree_check,no_root_squash,no_all_squash)" >>/etc/exports
+    echo "#share ${server_nfs} over nfs" >>${serve_nfs_exports}
+    # there should be NO space between the subnet and (nfs_options) below
+    echo "${server_nfs} ${server_subnet}(rw,sync,no_subtree_check,no_root_squash,no_all_squash)" >>${serve_nfs_exports}
   fi
-#guest side ops and packages
+#guest side ops and packages - LXC or VMs
 else
   echo "Guest specific packages..."
-  $installer install "${guest_packages[@]}"
-
-  # disabled by default unless audio is passed through in VM/LXC
-  #$installer install alsa-utils
-
-  # disabled by default unless GPU is passed through in VM/LXC
-  #$installer install intel-media-va-driver-non-free vainfo intel-gpu-tools
-
-  # on kodi hosts, install the following
-  #sudo apt install kodi-inputstream-adaptive
+  ${installer} install "${guest_packages[@]}"
 
   # NFS shares and mounts, LXC clients need to be privileged, else this will fail!
-  if grep -wq "/mnt/server -fstype=nfs" /etc/auto.mount; then
-    echo "NFS share mount /mnt/server already exists in /etc/auto.mount! Check /etc/auto.master if it does not work!"
+  if grep -wq "${client_nfs} -fstype=nfs" ${client_auto_pveshare}; then
+    echo "NFS share mount ${client_nfs} already exists in ${client_auto_pveshare}! Check ${client_auto_master} if it does not work!"
     echo
   else
-    echo Automounting NFS share mounts in /mnt/server
+    echo Automounting NFS share mounts to ${client_nfs}
     echo
-    cp /etc/auto.master /etc/auto.master.bak
-    cp /etc/auto.mount /etc/auto.mount.bak
-    mkdir -p /mnt/server
-    chmod 777 /mnt/server
+    cp "${client_auto_master}" "${client_auto_master}.bak"
+    cp "${client_auto_pveshare}" "${client_auto_pveshare}.bak"
+    mkdir -p ${client_nfs}
+    chmod 777 ${client_nfs}
 
-    echo "# manually added for server" >>/etc/auto.master
-    echo "/- /etc/auto.mount" >>/etc/auto.master
-    echo "# nfs server mount" >>/etc/auto.mount
-    echo "/mnt/server -fstype=nfs,rw 10.100.100.50:/mnt/sata-ssd" >>/etc/auto.mount
+    echo "# manually added for server" >>${client_auto_master}
+    echo "/- ${client_auto_pveshare}" >>${client_auto_master}
+    echo "# nfs server mount" >>${client_auto_pveshare}
+    echo "${client_nfs} -fstype=nfs,rw ${server_ip}:${server_nfs}" >>${client_auto_pveshare}
   fi
 fi
 
@@ -159,12 +169,15 @@ echo Configuring shell aliases...
 echo
 
 # add useful aliases to profile, works for bash and zsh
-if grep -wq "source ~/.aliases" ~/.profile; then
+source_aliases="source ${HOME}/.aliases"
+shell_profile="${HOME}/.profile"
+
+if grep -wq "${source_aliases}" "${shell_profile}"; then
   echo "Aliases file already sourced"
 else
-  # source aliases in .profile after creating backup
-  cp ~/.profile ~/.profile.bak
-  echo "source ~/.aliases" >>~/.profile
+  # source aliases in shell profile after creating backup
+  cp "${shell_profile}" "${shell_profile}.bak"
+  echo "${source_aliases}" >>"${shell_profile}"
   # use the unified dot files from dotfiles repo, works for all platforms now
   wget -O ~/.aliases https://raw.githubusercontent.com/anirudhra/dotfiles/refs/heads/main/home/.aliases
 fi
@@ -174,3 +187,4 @@ echo "Done! Logout and log back in for changes"
 echo
 
 # end of script
+#

@@ -38,5 +38,5 @@
 +auto.master
 
 # manually added for server
-/- /etc/auto.mount
+/- /etc/auto.pveshare
 

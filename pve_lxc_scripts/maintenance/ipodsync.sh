@@ -12,11 +12,11 @@ source_musicdir="${server_basesourcedir}/music"
 source_playlistsdir="${server_basesourcedir}/playlists"
 
 # ipod directories/mounts/devices
-ipod5g_mountdir="/mnt/IPOD5G"
-ipod7g_mountdir="/mnt/IPOD7G"
+#ipod5g_mountdir="/mnt/IPOD5G"
+#ipod7g_mountdir="/mnt/IPOD7G"
 ipod_mountdir="/mnt/ipod"
-ipod5g_device="/dev/sdb2" #FIXME: /dev/sdX2
-ipod7g_device="/dev/sdb1" #FIXME: /dev/sdX1
+#ipod5g_device="/dev/sdb2" #FIXME: /dev/sdX2
+#ipod7g_device="/dev/sdb1" #FIXME: /dev/sdX1
 ipod_musicdir="${ipod_mountdir}/music"
 ipod_playlistsdir="${ipod_mountdir}/playlists"
 
@@ -78,13 +78,13 @@ read answer
 # Instead use "-hvrltD --modify-window=1" options specifically for exfat/fat32 fs
 echo "Syncing playlists..."
 echo
-rsync -hvrltD --modify-window=1 --delete ${source_playlistsdir} ${ipod_mountdir}/
+rsync -hvrltD --modify-window=1 --delete ${source_playlistsdir} ${ipod_playlistsdir}/
 
 echo
 echo "Syncing music..."
 echo
 # sync music files
-rsync -hvrltD --modify-window=1 --delete ${source_musicdir} ${ipod_mountdir}/
+rsync -hvrltD --modify-window=1 --delete ${source_musicdir} ${ipod_musicdir}/
 
 ######################################################################3
 # done
