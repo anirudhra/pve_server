@@ -22,6 +22,9 @@
 2) Adds useful set of aliases /home/(user)/.aliases
 3) Mounts NFS exports: /etc/auto.master, /etc/auto.mount
 4) Provides X11 Intel iGPU config files if GUI is needed/installed
+
+*Note*: In LXC, use PID and GID 65534 in docker compose files for read/write permissions to shared directories so that it maps to nobody:nogroup on PVE.
+
 <br><br>
 
 ## LXC Environment automation
