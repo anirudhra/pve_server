@@ -59,6 +59,11 @@ function needs_reboot() {
 }
 
 function update_container() {
+
+  dockercd="cd /mnt/pve-sata-ssd/ssd-data/dockerapps/$(hostname)" 
+  dockerupdate="dockerfind . -maxdepth 1 -type d \( ! -name . \) -not -path '*disabled*' -exec bash -c \"cd '{}' && pwd && docker compose down && docker compose pull && docker compose up -d --remove-orphans\" \;"
+  dockerclean="docker image prune -a -f && docker system prune --volumes -f"
+
   container=$1
   header_info
   name=$(pct exec "$container" hostname)
@@ -71,11 +76,11 @@ function update_container() {
     echo -e "${BL}[Info]${GN} Updating ${BL}$container${CL} : ${GN}$name${CL} - ${YW}[No disk info for ${os}]${CL}\n"
   fi
   case "$os" in
-  alpine) pct exec "$container" -- ash -c "dockerupdateall" ;;
-  archlinux) pct exec "$container" -- bash -c "dockerupdateall" ;;
-  fedora | rocky | centos | alma) pct exec "$container" -- bash -c "dockerupdatell" ;;
-  ubuntu | debian | devuan) pct exec "$container" -- bash -c "dockerupdateall" ;;
-  opensuse) pct exec "$container" -- bash -c "dockerupdateall" ;;
+  alpine) pct exec "$container" -- ash -c "${dockercd} && ${dockerupdate} && ${dockerclean}" ;;
+  archlinux) pct exec "$container" -- bash -c "${dockercd} && ${dockerupdate} && ${dockerclean}" ;;
+  fedora | rocky | centos | alma) pct exec "$container" -- bash -c "${dockercd} && ${dockerupdate} && ${dockerclean}" ;;
+  ubuntu | debian | devuan) pct exec "$container" -- bash -c "${dockercd} && ${dockerupdate} && ${dockerclean}" ;;
+  opensuse) pct exec "$container" -- bash -c "${dockercd} && ${dockerupdate} && ${dockerclean}" ;;
   esac
 }
 
