@@ -10,7 +10,6 @@ Extract contents from sp<xxx>.exe file. Create the following directory hierarchy
 
 Rename "Qxx_<ver>.bin" as "firmware.bin" in this directory. Reboot to BIOS and choose to upgrade BIOS from local storage/media.
 
-<br><br>
 ## Custom scripts for Proxmox host and LXC setup and maintenance
 
 ### Proxmox Host:
