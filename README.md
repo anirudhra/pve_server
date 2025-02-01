@@ -2,13 +2,10 @@
 
 ## BIOS Updates
 
-Extract contents from sp<xxx>.exe file. Create the following directory hierarchy on a fat32 USB drive:
-
-'''
-< USB >:\HP\DEVFW
-'''
-
-Rename "Qxx_< ver >.bin" as "firmware.bin" in this directory. Reboot to BIOS and choose to upgrade BIOS from local storage/media.
+1. Extract contents from sp<xxx>.exe file by running it on a Windows machine or by other means
+2. Create <USB>:\HP\DEVFW directory on a fat32 formatted USB drive
+3. Rename "Qxx_< ver >.bin" as "firmware.bin" in this directory
+4. Reboot to BIOS and choose to upgrade BIOS from local storage/media
 
 ## Custom scripts for Proxmox host and LXC setup and maintenance
 
