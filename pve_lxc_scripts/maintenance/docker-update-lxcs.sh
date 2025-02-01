@@ -60,14 +60,15 @@ function needs_reboot() {
 
 function update_container() {
 
-  dockercd="cd /mnt/pve-sata-ssd/ssd-data/dockerapps/$(hostname)" 
-  dockerupdate="dockerfind . -maxdepth 1 -type d \( ! -name . \) -not -path '*disabled*' -exec bash -c \"cd '{}' && pwd && docker compose down && docker compose pull && docker compose up -d --remove-orphans\" \;"
-  dockerclean="docker image prune -a -f && docker system prune --volumes -f"
-
   container=$1
   header_info
   name=$(pct exec "$container" hostname)
   os=$(pct config "$container" | awk '/^ostype/ {print $2}')
+
+  dockercd="cd /mnt/pve-sata-ssd/ssd-data/dockerapps/${name}" 
+  dockerupdate="dockerfind . -maxdepth 1 -type d \( ! -name . \) -not -path '*disabled*' -exec bash -c \"cd '{}' && pwd && docker compose down && docker compose pull && docker compose up -d --remove-orphans\" \;"
+  dockerclean="docker image prune -a -f && docker system prune --volumes -f"
+  
   if [[ "$os" == "ubuntu" || "$os" == "debian" || "$os" == "fedora" ]]; then
     disk_info=$(pct exec "$container" df /boot | awk 'NR==2{gsub("%","",$5); printf "%s %.1fG %.1fG %.1fG", $5, $3/1024/1024, $2/1024/1024, $4/1024/1024 }')
     read -ra disk_info_array <<<"$disk_info"
