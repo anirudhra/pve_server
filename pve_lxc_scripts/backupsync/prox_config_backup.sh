@@ -13,7 +13,8 @@
 #   example: export BACK_DIR="/mnt/pve/media/backup"
 #   or
 #   example: BACK_DIR="." ./prox_config_backup.sh
-DEFAULT_BACK_DIR="/mnt/pve/media/backup"
+#DEFAULT_BACK_DIR="/mnt/pve/media/backup"
+DEFAULT_BACK_DIR="/mnt/sata-ssd/hostbackup"
 
 # number of backups to keep before overriding the oldest one
 MAX_BACKUPS=5

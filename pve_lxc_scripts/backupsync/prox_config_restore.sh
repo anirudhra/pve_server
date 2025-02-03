@@ -12,7 +12,7 @@
 set -e
 
 if [[ $# -eq 0 ]] ; then
-    echo 'Argument missing -> restore.sh pve_proxmoxhostname_2023-12-02.15.48.10.tar.gz'
+    echo 'Argument missing -> prox_config_restore.sh <path_to_pve_proxmoxhostname_2023-12-02.15.48.10.tar.gz>'
     exit 0
 fi
 
