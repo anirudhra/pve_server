@@ -746,3 +746,296 @@ done
 if [[ $executed -eq 0 ]]; then
 	usage
 fi
+f ($DISPLAY_ZERO_SPEED_FANS != true && value === 0) {\n\
+						// Skip this fan if DISPLAY_ZERO_SPEED_FANS is false and value is 0\n\
+						return;\n\
+					}\n\
+					// If the key matches the pattern, add the parent key and value to the fanKeys array\n\
+					fanKeys.push({ key: parentKey, value: value });\n\
+				}\n\
+				});\n\
+			}\n\
+\n\
+			let speeds = [];\n\
+			// Loop through the parent keys\n\
+			Object.keys(objValue).forEach(parentKey => {\n\
+				const parentObj = objValue[parentKey];\n\
+				// Array to store fan keys and values\n\
+				const fanKeys = [];\n\
+				// Call the recursive function to find fan keys and values\n\
+				findFanKeys(parentObj, fanKeys);\n\
+				// Sort the fan keys\n\
+				fanKeys.sort();\n\
+				// Process each fan key and value\n\
+				fanKeys.forEach(({ key: fanKey, value: fanSpeed }) => {\n\
+				try {\n\
+					const fan = fanKey.charAt(0).toUpperCase() + fanKey.slice(1); // Capitalize the first letter of fanKey\n\
+					speeds.push(\`\${fan}:&nbsp;\${fanSpeed} RPM\`);\n\
+				} catch(e) {\n\
+					console.error(\`Error retrieving fan speed for \${fanKey} in \${parentKey}:\`, e); // Debug: Log specific error\n\
+				}\n\
+				});\n\
+			});\n\
+			return '<div style=\"text-align: left; margin-left: 28px;\">' + (speeds.length > 0 ? speeds.join(' | ') : 'N/A') + '</div>';\n\
+		}\n\
+	},
+		}" "$PVE_MANAGER_LIB_JS_FILE"
+		fi
+
+		if [ $ENABLE_RAM_TEMP = true ]; then
+			# Add Ram temperature display
+			sed -i "/^Ext.define('PVE.node.StatusView',/ {
+				:a;
+				/items:/!{N;ba;}
+				:b;
+				/'thermal.*},/!{N;bb;}
+				a\
+				\\
+	{\n\
+		xtype: 'box',\n\
+		colspan: 2,\n\
+		html: gettext('RAM'),\n\
+	},\n\
+	{\n\
+		itemId: 'thermalRam',\n\
+		colspan: 2,\n\
+		printBar: false,\n\
+		title: gettext('Thermal State'),\n\
+		iconCls: 'fa fa-fw fa-thermometer-half',\n\
+		textField: 'sensorsOutput',\n\
+		renderer: function(value) {\n\
+			const cpuTempHelper = Ext.create('PVE.mod.TempHelper', {srcUnit: PVE.mod.TempHelper.CELSIUS, dstUnit: PVE.mod.TempHelper.CELSIUS});\n\
+			// Make SODIMM unique keys\n\
+			value = value.split('\\\n'); // Split by newlines\n\
+			for (let i = 0; i < value.length; i++) {\n\
+				// Check if the current line contains 'SODIMM'\n\
+				if (value[i].includes('SODIMM') && i + 1 < value.length) {\n\
+					// Extract the number '3' following 'temp' from the next line (e.g., "temp3_input": 25.000)\n\
+					let nextLine = value[i + 1];\n\
+					let match = nextLine.match(/\"temp(\\\d+)_input\": (\\\d+\\\.\\\d+)/);\n\
+\n\
+					if (match) {\n\
+						let number = match[1]; // Extracted number\n\
+						// Replace the current line with SODIMM by the extracted number\n\
+						value[i] = value[i].replace('SODIMM', \`SODIMM\${number}\`);\n\
+					}\n\
+				}\n\
+			}\n\
+			value = value.join('\\\n'); // Reverse line split\n\
+\n\
+			let objValue;\n\
+			try {\n\
+				objValue = JSON.parse(value) || {};\n\
+			} catch(e) {\n\
+				objValue = {};\n\
+			}\n\
+\n\
+			// Recursive function to find ram keys and values\n\
+			function findRamKeys(obj, ramKeys, parentKey = null) {\n\
+				Object.keys(obj).forEach(key => {\n\
+				const value = obj[key];\n\
+				if (typeof value === 'object' && value !== null) {\n\
+					// If the value is an object, recursively call the function\n\
+					findRamKeys(value, ramKeys, key);\n\
+				} else if (/^temp\\\d+_input$/.test(key) && parentKey && parentKey.startsWith(\"SODIMM\")) {\n\
+					if (value !== 0) {\n\
+						ramKeys.push({ key: parentKey, value: value});\n\
+					}\n\
+				}\n\
+				});\n\
+			}\n\
+\n\
+			let ramTemps = [];\n\
+			// Loop through the parent keys\n\
+			Object.keys(objValue).forEach(parentKey => {\n\
+				const parentObj = objValue[parentKey];\n\
+				// Array to store ram keys and values\n\
+				const ramKeys = [];\n\
+				// Call the recursive function to find ram keys and values\n\
+				findRamKeys(parentObj, ramKeys);\n\
+				// Sort the ramKeys keys\n\
+				ramKeys.sort();\n\
+				// Process each ram key and value\n\
+				ramKeys.forEach(({ key: ramKey, value: ramTemp }) => {\n\
+				try {\n\
+					ram = ramKey.replace('SODIMM', 'SODIMM ');\n\
+					ramTemps.push(\`\${ram}:&nbsp\${ramTemp}\${cpuTempHelper.getUnit()}\`);\n\
+				} catch(e) {\n\
+					console.error(\`Error retrieving Ram Temp for \${ramTemps} in \${parentKey}:\`, e); // Debug: Log specific error\n\
+				}\n\
+				});\n\
+			});\n\
+			return '<div style=\"text-align: left; margin-left: 28px;\">' + (ramTemps.length > 0 ? ramTemps.join(' | ') : 'N/A') + '</div>';\n\
+		}\n\
+	},
+		}" "$PVE_MANAGER_LIB_JS_FILE"
+		fi
+
+		# Add an empty line to separate modified items as a visual group
+		# NOTE: Check for the presence of items in the reverse order of display
+		local lastItemId=""
+		if [ $ENABLE_HDD_TEMP = true ]; then
+			lastItemId="thermalHdd"
+		elif [ $ENABLE_NVME_TEMP = true ]; then
+			lastItemId="thermalNvme"
+		elif [ $ENABLE_FAN_SPEED = true ]; then
+			lastItemId="speedFan"
+		else
+			lastItemId="thermalCpu"
+		fi
+
+		if [ -n "$lastItemId" ]; then
+			sed -i "/^Ext.define('PVE.node.StatusView',/ {
+			:a;
+			/^.*{.*'$lastItemId'.*},/!{N;ba;}
+			a\
+			\\
+	{\n\
+		xtype: 'box',\n\
+		colspan: 2,\n\
+		padding: '0 0 20 0',\n\
+	},
+		}" "$PVE_MANAGER_LIB_JS_FILE"
+		fi
+
+		# Move the node summary box into its own container
+		sed -i "/^\s*nodeStatus: nodeStatus,/ {
+			:a
+			/items: \[/ !{N;ba;}
+			a\
+			\\
+		{\n\
+			xtype: 'container',\n\
+			itemId: 'summarycontainer',\n\
+			layout: 'column',\n\
+			minWidth: 700,\n\
+			defaults: {\n\
+				minHeight: 350,\n\
+				padding: 5,\n\
+				columnWidth: 1,\n\
+			},\n\
+			items: [\n\
+				nodeStatus,\n\
+			]\n\
+		},
+		}" "$PVE_MANAGER_LIB_JS_FILE"
+
+		# Deactivate the original box instance
+		sed -i "/^\s*nodeStatus: nodeStatus,/ {
+			:a
+			/itemId: 'itemcontainer',/ !{N;ba;}
+			n;
+			:b
+			/nodeStatus,/ !{N;bb;}
+			s/nodeStatus/\/\/nodeStatus/
+		}" "$PVE_MANAGER_LIB_JS_FILE"
+
+		msg "Sensor display items added to the summary panel in \"$PVE_MANAGER_LIB_JS_FILE\"."
+
+		restart_proxy
+
+		msg "Installation completed."
+
+		info "Clear the browser cache to ensure all changes are visualized."
+	else
+		warn "Sensor display items already added to the summary panel in \"$PVE_MANAGER_LIB_JS_FILE\"."
+	fi
+}
+
+# Function to uninstall the modification
+function uninstall_mod {
+	msg "\nRestoring modified files..."
+	# Find the latest Nodes.pm file using the find command
+	local latest_nodes_pm=$(find "$BACKUP_DIR" -name "Nodes.pm.*" -type f -printf '%T+ %p\n' 2>/dev/null | sort -r | head -n 1 | awk '{print $2}')
+
+	if [ -n "$latest_nodes_pm" ]; then
+		# Remove the latest Nodes.pm file
+		cp "$latest_nodes_pm" "$NODES_PM_FILE"
+		msg "Copied latest backup to $NODES_PM_FILE."
+	else
+		warn "No Nodes.pm files found."
+	fi
+
+	# Find the latest pvemanagerlib.js file using the find command
+	local latest_pvemanagerlibjs=$(find "$BACKUP_DIR" -name "pvemanagerlib.js.*" -type f -printf '%T+ %p\n' 2>/dev/null | sort -r | head -n 1 | awk '{print $2}')
+
+	if [ -n "$latest_pvemanagerlibjs" ]; then
+		# Remove the latest pvemanagerlib.js file
+		cp "$latest_pvemanagerlibjs" "$PVE_MANAGER_LIB_JS_FILE"
+		msg "Copied latest backup to \"$PVE_MANAGER_LIB_JS_FILE\"."
+	else
+		warn "No pvemanagerlib.js files found."
+	fi
+
+	if [ -n "$latest_nodes_pm" ] || [ -n "$latest_pvemanagerlibjs" ]; then
+		# At least one of the variables is not empty, restart the proxy
+		restart_proxy
+	fi
+}
+
+function restart_proxy {
+	# Restart pveproxy
+	msg "\nRestarting PVE proxy..."
+	systemctl restart pveproxy
+}
+
+function save_sensors_data {
+	# Check if DEBUG_SAVE_PATH exists and is writable
+	if [[ ! -d "$DEBUG_SAVE_PATH" || ! -w "$DEBUG_SAVE_PATH" ]]; then
+		err "Directory $DEBUG_SAVE_PATH does not exist or is not writable. No file could be saved."
+		return
+	fi
+
+	# Check if command exists
+	if (command -v sensors &>/dev/null); then
+		# Save sensors output
+		local filepath="${DEBUG_SAVE_PATH}/${DEBUG_SAVE_FILENAME}"
+		msg "Sensors data will be saved in $filepath"
+
+		# Prompt user for confirmation
+		local choiceContinue=$(ask "Do you wish to continue? (y/n)")
+		case "$choiceContinue" in
+			[yY])
+				sensors -j >"$filepath"
+				msgb "Sensors data saved in $filepath."
+				;;
+			*)
+				warn "Operation cancelled by user."
+				;;
+		esac
+	else
+		err "Sensors is not installed. No file could be saved."
+	fi
+}
+
+# Process the arguments using a while loop and a case statement
+executed=0
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		install)
+			executed=$(($executed + 1))
+			msgb "\nInstalling the Proxmox VE sensors display mod..."
+			install_packages
+			install_mod
+			echo # add a new line
+			;;
+		uninstall)
+			executed=$(($executed + 1))
+			msgb "\nUninstalling the Proxmox VE sensors display mod..."
+			uninstall_mod
+			echo # add a new line
+			;;
+		save-sensors-data)
+			executed=$(($executed + 1))
+			msgb "\nSaving current sensor readings in a file for debugging..."
+			save_sensors_data
+			echo # add a new line
+			;;
+	esac
+	shift
+done
+
+# If no arguments were provided or all arguments have been processed, print the usage message
+if [[ $executed -eq 0 ]]; then
+	usage
+fi
