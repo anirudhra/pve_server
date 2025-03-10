@@ -78,13 +78,16 @@ read answer
 # Instead use "-hvrltD --modify-window=1" options specifically for exfat/fat32 fs
 echo "Syncing playlists..."
 echo
-rsync -hvrltD --modify-window=1 --delete ${source_playlistsdir} ${ipod_playlistsdir}/
+#rsync -hvrltD --modify-window=1 --delete ${source_playlistsdir} ${ipod_playlistsdir}/
+# above commands force resync on fat32, try again with new command options below
+# --size-only is for quick check, -c can be added for complete checksum instead (slower)
+rsync -hvr --size-only --modify-window=2 --delete ${source_playlistsdir} ${ipod_playlistsdir}/
 
 echo
 echo "Syncing music..."
 echo
 # sync music files
-rsync -hvrltD --modify-window=1 --delete ${source_musicdir} ${ipod_musicdir}/
+rsync -hvr --size-only --modify-window=2 --delete ${source_musicdir} ${ipod_musicdir}/
 
 ######################################################################3
 # done
