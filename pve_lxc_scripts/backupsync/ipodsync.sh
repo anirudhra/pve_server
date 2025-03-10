@@ -64,6 +64,13 @@ echo "==========================================================================
 echo "Disk space usage of ${ipod_mountdir}"
 df -h ${ipod_mountdir}
 echo
+echo "==============================================================================="
+echo
+echo "Source music dir: ${source_musicdir}"
+echo "Source playlist dir: ${source_playlistsdir}"
+echo "Destination music dir:${ipod_musicdir}"
+echo "Destination playlist dir:${ipod_playlistsdir}"
+echo
 echo "==========================================================================================="
 echo "If this is not correct, press Ctrl+C to exit, mount and rerun. Else Press Enter to continue"
 echo "==========================================================================================="
@@ -73,7 +80,6 @@ read answer
 
 ######################################################################3
 # sync playlists and music with progress shown
-# don't forget the trailing '/' for $ipod_mountdir!
 # Can't use -a (archive) because owner and group are not supported on iPod/vfat/fat32 and will throw errors
 # Instead use "-hvrltD --modify-window=1" options specifically for exfat/fat32 fs
 echo "Syncing playlists..."
@@ -81,13 +87,13 @@ echo
 #rsync -hvrltD --modify-window=1 --delete ${source_playlistsdir} ${ipod_playlistsdir}/
 # above commands force resync on fat32, try again with new command options below
 # --size-only is for quick check, -c can be added for complete checksum instead (slower)
-rsync -hvr --size-only --modify-window=2 --delete ${source_playlistsdir} ${ipod_playlistsdir}/
+rsync -hvr --size-only --modify-window=2 --delete ${source_playlistsdir}/ ${ipod_playlistsdir}
 
 echo
 echo "Syncing music..."
 echo
 # sync music files
-rsync -hvr --size-only --modify-window=2 --delete ${source_musicdir} ${ipod_musicdir}/
+rsync -hvr --size-only --modify-window=2 --delete ${source_musicdir}/ ${ipod_musicdir}
 
 ######################################################################3
 # done
