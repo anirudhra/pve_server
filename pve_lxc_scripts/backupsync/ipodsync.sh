@@ -78,15 +78,17 @@ echo "==========================================================================
 # read into dummy variable to pause
 read answer
 
+# create destination ipod directories, in case they don't exist
+mkdir -p ${ipod_playlistsdir}
+mkdir -p ${ipod_musicdir}
+
 ######################################################################3
 # sync playlists and music with progress shown
-# Can't use -a (archive) because owner and group are not supported on iPod/vfat/fat32 and will throw errors
-# Instead use "-hvrltD --modify-window=1" options specifically for exfat/fat32 fs
 echo "Syncing playlists..."
 echo
-#rsync -hvrltD --modify-window=1 --delete ${source_playlistsdir} ${ipod_playlistsdir}/
-# above commands force resync on fat32, try again with new command options below
 # --size-only is for quick check, -c can be added for complete checksum instead (slower)
+# Don't forget the leading "/" in front of source directories to specify copying the 
+# contents of that dir and not the dir itself!
 rsync -hvr --size-only --modify-window=2 --delete ${source_playlistsdir}/ ${ipod_playlistsdir}
 
 echo
