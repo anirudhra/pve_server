@@ -112,27 +112,42 @@ function configure {
 		err "Sensor output error.\n\nCommand output:\n${sensorsOutput}\n\nExiting...\n"
 	fi
 
-	# Prompt user for which temperature to use
-	while true; do
-		local choiceTempDisplayType=$(ask "Do you wish to display temperatures for all cores [C] or just an average temperature per CPU [a] (note: AMD only supports average)? (C/a)")
-		case "$choiceTempDisplayType" in
-			# Set temperature search criteria
-			[cC] | "")
-				CPU_TEMP_TARGET="Core"
-				info "Temperatures will be displayed for all cores."
-				;;
-			[aA])
-				CPU_TEMP_TARGET="Package"
-				info "An average temperature will be displayed per CPU."
-				;;
-			*)
-				# If the user enters an invalid input, print an warning message and retry ask.
-				warn "Invalid input."
-				continue
-				;;
-		esac
-		break
+	# Check if CPU is part of known list for autoconfiguration
+	msg "\nDetecting support for CPU temperature sensors..."
+	supportedCPU=false
+	for item in "${KNOWN_CPU_SENSORS[@]}"; do
+			if (echo "$sensorsOutput" | grep -q "$item"); then
+					echo $item
+					supportedCPU=true
+			fi
 	done
+
+	# Prompt user for which CPU temperature to use
+	if [ $supportedCPU = true ]; then
+		while true; do
+				local choiceTempDisplayType=$(ask "Do you wish to display temperatures for all cores [C] or just an average temperature per CPU [a] (note: AMD only supports average)? (C/a)")
+				case "$choiceTempDisplayType" in
+						# Set temperature search criteria
+						[cC] | "")
+							CPU_TEMP_TARGET="Core"
+							info "Temperatures will be displayed for all cores."
+							;;
+						[aA])
+							CPU_TEMP_TARGET="Package"
+							info "An average temperature will be displayed per CPU."
+							;;
+						*)
+							# If the user enters an invalid input, print an warning message and retry as>
+							warn "Invalid input."
+							continue
+							;;
+				esac
+				break
+		done
+		SENSORS_DETECTED=true
+	else
+			warn "No CPU temperature sensors found."
+	fi
 
 	# Look for ram temps
 	msg "\nDetecting support for RAM temperature sensors..."
@@ -268,11 +283,35 @@ function install_mod {
 	# Perform backup
 	# Create backup of original file
 	cp "$NODES_PM_FILE" "$BACKUP_DIR/Nodes.pm.$timestamp"
-	msg "Backup of \"$NODES_PM_FILE\" saved to \"$BACKUP_DIR/Nodes.pm.$timestamp\"."
+
+	# Verify backup file was created and is identical
+	if [ -f "$BACKUP_DIR/Nodes.pm.$timestamp" ]; then
+		if cmp -s "$NODES_PM_FILE" "$BACKUP_DIR/Nodes.pm.$timestamp"; then
+			msg "Backup of \"$NODES_PM_FILE\" saved to \"$BACKUP_DIR/Nodes.pm.$timestamp\" and verified."
+		else
+			msg "WARNING: Backup file \"$BACKUP_DIR/Nodes.pm.$timestamp\" differs from original. Exiting..."
+			exit 1
+		fi
+	else
+		msg "ERROR: Failed to create backup \"$BACKUP_DIR/Nodes.pm.$timestamp\". Exiting..."
+		exit 1
+	fi
 
 	# Create backup of original file
 	cp "$PVE_MANAGER_LIB_JS_FILE" "$BACKUP_DIR/pvemanagerlib.js.$timestamp"
-	msg "Backup of \"$PVE_MANAGER_LIB_JS_FILE\" saved to \"$BACKUP_DIR/pvemanagerlib.js.$timestamp\"."
+
+	# Verify backup file was created and is identical
+	if [ -f "$BACKUP_DIR/pvemanagerlib.js.$timestamp" ]; then
+		if cmp -s "$PVE_MANAGER_LIB_JS_FILE" "$BACKUP_DIR/pvemanagerlib.js.$timestamp"; then
+			msg "Backup of \"$PVE_MANAGER_LIB_JS_FILE\" saved to \"$BACKUP_DIR/pvemanagerlib.js.$timestamp\" and verified."
+		else
+			msg "WARNING: Backup file \"$BACKUP_DIR/pvemanagerlib.js.$timestamp\" differs from original. Exiting..."
+			exit 1
+		fi
+	else
+		msg "ERROR: Failed to create backup \"$BACKUP_DIR/pvemanagerlib.js.$timestamp\". Exiting..."
+		exit 1
+	fi
 
 	if [ $SENSORS_DETECTED = true ]; then
 		local sensorsCmd
@@ -451,8 +490,8 @@ Ext.define('PVE.mod.TempHelper', {\n\
 				let bTctl = false;\n\
 				cpuKeysA.forEach((cpuKey, cpuIndex) => {\n\
 					let items = objValue[cpuKey];\n\
-					if (Object.keys(items).findIndex(item => { return String(item).startsWith('Tccd'); })) bTccd = true;\n\
-					if (Object.keys(items).findIndex(item => { return String(item).startsWith('Tctl'); })) bTctl = true;\n\
+					bTccd = Object.keys(items).findIndex(item => { return String(item).startsWith('Tccd'); }) >= 0;\n\
+					bTctl = Object.keys(items).findIndex(item => { return String(item).startsWith('Tctl'); }) >= 0;\n\
 				});\n\
 				if (bTccd && bTctl && '$CPU_TEMP_TARGET' == 'Core') {\n\
 					AMDPackagePrefix = 'Tccd';\n\
