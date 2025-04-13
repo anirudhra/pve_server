@@ -39,7 +39,13 @@ ls ${backup_dest}
 echo
 echo "==============================================================================="
 echo "Disk space usage of destination: ${backup_dest}"
+echo
 df -h ${backup_dest}
+echo
+echo "==============================================================================="
+echo
+echo "Command: rsync -avHPAX --delete --exclude-from=${backup_exclude_list} ${backup_source_dir} ${backup_dest_dir}"
+echo
 echo
 echo "==========================================================================================="
 echo "If this is not correct, press Ctrl+C to exit, mount and rerun. Else Press Enter to continue"
