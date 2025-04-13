@@ -7,5 +7,5 @@ zfspool="pvebackup"
 
 zpool clear -nFX ${zfspool}
 
-zpool status
-zfs list
+zpool status -v
+zfs list -v
