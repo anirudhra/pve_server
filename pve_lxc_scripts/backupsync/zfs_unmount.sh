@@ -9,5 +9,7 @@ zfs umount /${zfspool}
 # exports the zpool to make it safe to USB disconnect after unmount
 zpool export ${zfspool}
 
-zpool status -v
-zfs list -v
+#zpool status -v
+#zfs list -v
+zpool status
+zfs list
