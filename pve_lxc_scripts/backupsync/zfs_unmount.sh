@@ -8,3 +8,7 @@ zfspool="pvebackup"
 zfs umount /${zfspool}
 # exports the zpool to make it safe to USB disconnect after unmount
 zpool export ${zfspool}
+
+zpool status
+zfs list
+

@@ -14,3 +14,7 @@ mkdir -p /${mountpoint}
 
 # following command may not be needed all the time, but just in case
 zfs set mountpoint=/${mountpoint} ${zfspool}/${mountpoint}
+
+zpool status
+zfs list
+
