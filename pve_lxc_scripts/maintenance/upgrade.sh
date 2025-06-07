@@ -14,7 +14,9 @@ fullupdate()
   
   #pve server only
   if [ -x "$(command -v pveversion)" ]; then
-    sudo fwupdate
+    if [ -x "$(command -v fwupdmgr)" ]; then
+      sudo fwupdmgr refresh --force && sudo fwupdmgr get-updates && sudo fwupdmgr update
+    fi
   fi  
 }
 
