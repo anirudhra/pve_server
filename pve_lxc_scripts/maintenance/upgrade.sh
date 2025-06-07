@@ -9,8 +9,8 @@ fullclean()
 
 fullupdate()
 {
-  sudo apt update
-  sudo apt dist-upgrade
+  sudo apt update -y
+  sudo apt dist-upgrade -y
   
   #pve server only
   if [ -x "$(command -v pveversion)" ]; then
