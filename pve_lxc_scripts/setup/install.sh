@@ -64,6 +64,8 @@ common_packages=(
   'reptyr'
   'ncdu'
   'autofs'
+  'unattended-upgrades'
+  'apt-listchanges'
 )
 
 pve_packages=(
@@ -102,9 +104,14 @@ guest_packages=(
 installer="apt"
 $installer install "${common_packages[@]}"
 
+# configure autoupdates/unattended-upgrades
+echo "Unattended-Upgrade::Mail \"root\";" >/etc/apt/apt.conf.d/52unattended-upgrades-local
+dpkg-reconfigure unattended-upgrades
+
 #server side ops and packages
 #nfs mount/export
-server_nfs="/mnt/sata-ssd"
+server_sata_nfs="/mnt/sata-ssd"
+server_nvme_nfs="/mnt/nvme-ssd"
 server_subnet="10.100.100.0/24"
 server_ip="10.100.100.50"
 client_nfs="/mnt/nfs"
@@ -119,15 +126,15 @@ if [ "${mode}" = "pve" ]; then
   ${installer} install "${pve_packages[@]}"
 
   # NFS shares and mounts, export on PVE server
-  if grep -wq "${server_nfs} ${server_subnet}" ${serve_nfs_exports}; then
-    echo NFS share mount ${server_subnet}:${server_nfs} already exists in ${serve_nfs_exports}!
+  if grep -wq "${server_sata_nfs} ${server_subnet}" ${serve_nfs_exports}; then
+    echo NFS share mount ${server_subnet}:${server_sata_nfs} already exists in ${serve_nfs_exports}!
     echo
   else
-    echo Exporting NFS share mounts as ${server_subnet}:${server_nfs}
+    echo Exporting NFS share mounts as ${server_subnet}:${server_sata_nfs}
     echo
-    echo "#share ${server_nfs} over nfs" >>${serve_nfs_exports}
+    echo "#share ${server_sata_nfs} over nfs" >>${serve_nfs_exports}
     # there should be NO space between the subnet and (nfs_options) below
-    echo "${server_nfs} ${server_subnet}(rw,sync,no_subtree_check,no_root_squash,no_all_squash)" >>${serve_nfs_exports}
+    echo "${server_sata_nfs} ${server_subnet}(rw,sync,no_subtree_check,no_root_squash,no_all_squash)" >>${serve_nfs_exports}
   fi
 #guest side ops and packages - LXC or VMs
 else
@@ -149,7 +156,7 @@ else
     echo "# manually added for server" >>${client_auto_master}
     echo "/- ${client_auto_pveshare}" >>${client_auto_master}
     echo "# nfs server mount" >>${client_auto_pveshare}
-    echo "${client_nfs} -fstype=nfs,rw ${server_ip}:${server_nfs}" >>${client_auto_pveshare}
+    echo "${client_nfs} -fstype=nfs,rw ${server_ip}:${server_sata_nfs}" >>${client_auto_pveshare}
   fi
 fi
 
