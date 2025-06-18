@@ -31,7 +31,9 @@
 
 *Note*: In LXC, use PID and GID 65534 in docker compose files for read/write permissions to shared directories so that it maps to nobody:nogroup on PVE.
 
-<br><br>
+### Unattended Upgrade for Debian-based distros
+
+Refer to: https://wiki.debian.org/UnattendedUpgrades
 
 ## LXC Environment automation
 
