@@ -6,6 +6,13 @@
 #      @daily  ./devicebackuprestore.sh /homeassistant/.storage/core.config_entries backup
 # 2) Put another instance in crontab -e for the restore to run a few minutes after the router reboots
 #      <frequency> ./devicebackuprestore.sh /homeassistant/.storage/core.config_entries restore
+#
+# crontab -e contents for reference:
+## backup device config everyday
+# @daily /bin/bash /root/devicebackup/devicebackuprestore.sh /homeassistant/.storage/core.config_entries backup
+## restore device config 30mins after every monthly router reboot: on 15th of every month at 3.30am and restart homeassistant
+# 30 3 15 * * /bin/bash /root/devicebackup/devicebackuprestore.sh /homeassistant/.storage/core.config_entries restore && ha core restart
+#
 # This script copies a file to a backup location or restores it from backup.
 # It requires exactly two arguments: the source file and either "backup" or "restore".
 
