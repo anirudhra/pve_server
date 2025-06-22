@@ -9,6 +9,8 @@
 
 ## Custom scripts for Proxmox host and LXC setup and maintenance
 
+Installation script:
+
 ### Proxmox Host:
 
 1) HP UEFI 2.27 update introduces an issue with displayport pin mapping by not activating pin 6 for audio in Linux and needs explicit patching until kernel includes it by default (not as of 6.8.12): /etc/modprobe.d/hda-jack-retask.conf, /usr/lib/firmware/hda-jack-retask.fw
@@ -34,6 +36,10 @@
 ### Unattended Upgrade for Debian-based distros
 
 Refer to: https://wiki.debian.org/UnattendedUpgrades
+
+## Useful management tools
+
+Proxmenux is a useful suite of scripts in TUI for managing various aspects of PVE server: https://github.com/MacRimi/ProxMenux
 
 ## LXC Environment automation
 
