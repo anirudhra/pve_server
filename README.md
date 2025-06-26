@@ -1,26 +1,8 @@
-# HP Elitedesk 800 G4/G5 Desktop Mini as Server
+# PVE Server: Google TPU Archive 
 
-## BIOS Updates
+This repo only contains Google TPU archives. PVE setup/installation/maintenance scripts have been relocated to "dotfiles" repo: https://github.com/anirudhra/dotfiles
 
-1. Extract contents from sp<xxx>.exe file by running it on a Windows machine or by other means
-2. Create <USB>:\HP\DEVFW directory on a fat32 formatted USB drive
-3. Rename "Qxx_< ver >.bin" as "firmware.bin" in this directory
-4. Reboot to BIOS and choose to upgrade BIOS from local storage/media
 
-## Custom scripts for Proxmox host and LXC setup and maintenance
-
-Installation script:
-
-### Proxmox Host:
-
-1) HP UEFI 2.27 update introduces an issue with displayport pin mapping by not activating pin 6 for audio in Linux and needs explicit patching until kernel includes it by default (not as of 6.8.12): /etc/modprobe.d/hda-jack-retask.conf, /usr/lib/firmware/hda-jack-retask.fw
-2) Sets DP/HDMI as default audio: /etc/asound.conf
-3) Adds useful set of aliases /home/(user)/.aliases
-4) Enables NFS exports: /etc/exports
-5) Enables Samba exports to /etc/samba/smb.conf
-6) Provides X11 Intel iGPU config files if GUI is needed/installed
-7) Adds additional /etc/modules for acpi health monitoring and Intel VT-d virtualization
-8) Includes GPU, Keyboard, Audio passthrough in LXC conf for reference: /etc/pve/lxc/lxc-id.conf
 9) Includes scritps for PVE host maintenance, backup-restore and other tweaks: /pve_maintenance (needs to be manually installed/pulled from github)
 10) Includes Coral TPU drivers, runtimes etc. for newer versions of Linux kernels, Python as standard Google repos no longer support any of those are stuck pre-Linux6.2 and Python 3.9
 
